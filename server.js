@@ -13,15 +13,20 @@ app.use(bodyParser({extended : true}))
 
 
 app.use(express.static(__dirname + '/public/dist/public'))
+app.use(express.static(__dirname + '/minesweeper/dist/minesweeper'))
 // require('./server/config/routes')(app)
 
-const server = app.listen(8000, () => {
-    console.log("Listening on port 8000")
+const server = app.listen(5000, () => {
+    console.log("Listening on port 5000")
 })
 
-app.get('/', function(req, res){
-    res.sendFile(__dirname + 'index.html')
+app.get('/hangman', function(req, res){
+    res.sendFile(path.resolve("public/dist/public/index.html"))
 })
+
+// app.get('minesweeper', function(req, res){
+//     res.sendFile(path.resolve("minesweeper/dist/minesweeper/index.html"))
+// })
 
 app.all('*', function(req, res){
     res.sendFile(path.resolve("public/dist/public/index.html"))

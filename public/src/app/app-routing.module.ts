@@ -1,10 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HangmanComponent } from './hangman/hangman.component';
 
-const routes: Routes = [
-  { path : 'hangman', component : HangmanComponent }
-];
+const routes: Routes = [];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
