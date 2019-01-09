@@ -74,7 +74,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "welcome to hangman!"
+module.exports = "<app-hangman></app-hangman>>"
 
 /***/ }),
 
@@ -125,6 +125,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./hangman/hangman.component */ "./src/app/hangman/hangman.component.ts");
+
 
 
 
@@ -136,7 +138,8 @@ var AppModule = /** @class */ (function () {
     AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]
+                _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
+                _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_5__["HangmanComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -147,6 +150,112 @@ var AppModule = /** @class */ (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/hangman/hangman.component.css":
+/*!***********************************************!*\
+  !*** ./src/app/hangman/hangman.component.css ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2hhbmdtYW4vaGFuZ21hbi5jb21wb25lbnQuY3NzIn0= */"
+
+/***/ }),
+
+/***/ "./src/app/hangman/hangman.component.html":
+/*!************************************************!*\
+  !*** ./src/app/hangman/hangman.component.html ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  hangman works!\n</p>\n"
+
+/***/ }),
+
+/***/ "./src/app/hangman/hangman.component.ts":
+/*!**********************************************!*\
+  !*** ./src/app/hangman/hangman.component.ts ***!
+  \**********************************************/
+/*! exports provided: HangmanComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HangmanComponent", function() { return HangmanComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _hangman__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hangman */ "./src/app/hangman/hangman.ts");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+
+
+
+
+var HangmanComponent = /** @class */ (function () {
+    function HangmanComponent(_titleService) {
+        this._titleService = _titleService;
+        this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
+        this.setTitle();
+    }
+    HangmanComponent.prototype.ngOnInit = function () {
+    };
+    HangmanComponent.prototype.setTitle = function () {
+        this._titleService.setTitle("Hangman");
+    };
+    HangmanComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-hangman',
+            template: __webpack_require__(/*! ./hangman.component.html */ "./src/app/hangman/hangman.component.html"),
+            styles: [__webpack_require__(/*! ./hangman.component.css */ "./src/app/hangman/hangman.component.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"]])
+    ], HangmanComponent);
+    return HangmanComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/hangman/hangman.ts":
+/*!************************************!*\
+  !*** ./src/app/hangman/hangman.ts ***!
+  \************************************/
+/*! exports provided: Hangman */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Hangman", function() { return Hangman; });
+var Hangman = /** @class */ (function () {
+    function Hangman() {
+        this.guessesRemaining = 5;
+        this.readTextFile('./assets/words.txt');
+        var idx = Math.floor(Math.random() * (this.allWords.length - 1));
+        this.wordToGuess = this.allWords[idx];
+        console.log(this.wordToGuess);
+    }
+    Hangman.prototype.readTextFile = function (file) {
+        var _this = this;
+        var rawFile = new XMLHttpRequest();
+        rawFile.open("GET", file, false);
+        rawFile.onreadystatechange = function () {
+            if (rawFile.readyState === 4) {
+                if (rawFile.status === 200 || rawFile.status == 0) {
+                    var rawWords = rawFile.responseText;
+                    console.log(rawWords);
+                    _this.allWords = rawWords.split(' ');
+                }
+            }
+        };
+        rawFile.send(null);
+    };
+    return Hangman;
 }());
 
 
