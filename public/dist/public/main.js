@@ -167,7 +167,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2hhbmdtYW4vaGFuZ21hbi5jb21wb25lbnQuY3NzIn0= */"
+module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    font-style: italic;\n}\n.underline{\n    font-size: 150px;\n    margin-bottom: 3%;\n    margin-right: 3%;\n    margin-top: -4%;\n    color: #f2b362;\n    margin-right: 1%;\n}\n.hangmanContainer{\n    text-align: center;\n}\n.underline, .keyboard {\n    display: inline-block;\n    vertical-align: top;\n    \n}\n.keyboard{\n    font-style: italic;\n    box-sizing: border-box;\n    margin-top: 0;\n    border: 1px solid gray;\n    border-radius: 5px;\n    width: 6%;\n    font-size: 4em;\n    padding: 7px;\n    margin-right: 5px;\n    margin-bottom: 2%;\n}\n.keyboard:hover {\n    background-color: #677077;\n    cursor: pointer;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaGFuZ21hbi9oYW5nbWFuLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLG1CQUFtQjtDQUN0QjtBQUNEO0lBQ0ksaUJBQWlCO0lBQ2pCLGtCQUFrQjtJQUNsQixpQkFBaUI7SUFDakIsZ0JBQWdCO0lBQ2hCLGVBQWU7SUFDZixpQkFBaUI7Q0FDcEI7QUFFRDtJQUNJLG1CQUFtQjtDQUN0QjtBQUVEO0lBQ0ksc0JBQXNCO0lBQ3RCLG9CQUFvQjs7Q0FFdkI7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQix1QkFBdUI7SUFDdkIsY0FBYztJQUNkLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIsVUFBVTtJQUNWLGVBQWU7SUFDZixhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGtCQUFrQjtDQUNyQjtBQUVEO0lBQ0ksMEJBQTBCO0lBQzFCLGdCQUFnQjtDQUNuQiIsImZpbGUiOiJzcmMvYXBwL2hhbmdtYW4vaGFuZ21hbi5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRpdGxlIHtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgZm9udC1zaXplOiA2ZW07XG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuLnVuZGVybGluZXtcbiAgICBmb250LXNpemU6IDE1MHB4O1xuICAgIG1hcmdpbi1ib3R0b206IDMlO1xuICAgIG1hcmdpbi1yaWdodDogMyU7XG4gICAgbWFyZ2luLXRvcDogLTQlO1xuICAgIGNvbG9yOiAjZjJiMzYyO1xuICAgIG1hcmdpbi1yaWdodDogMSU7XG59XG5cbi5oYW5nbWFuQ29udGFpbmVye1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuLnVuZGVybGluZSwgLmtleWJvYXJkIHtcbiAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7XG4gICAgdmVydGljYWwtYWxpZ246IHRvcDtcbiAgICBcbn1cblxuLmtleWJvYXJke1xuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcbiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgIG1hcmdpbi10b3A6IDA7XG4gICAgYm9yZGVyOiAxcHggc29saWQgZ3JheTtcbiAgICBib3JkZXItcmFkaXVzOiA1cHg7XG4gICAgd2lkdGg6IDYlO1xuICAgIGZvbnQtc2l6ZTogNGVtO1xuICAgIHBhZGRpbmc6IDdweDtcbiAgICBtYXJnaW4tcmlnaHQ6IDVweDtcbiAgICBtYXJnaW4tYm90dG9tOiAyJTtcbn1cblxuLmtleWJvYXJkOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjNjc3MDc3O1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn0iXX0= */"
 
 /***/ }),
 
@@ -178,7 +178,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  hangman works!\n</p>\n"
+module.exports = "<div class = 'title'>Hangman</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of letters'>_</div>\n  \n  \n  <div *ngFor = 'let row of hangman.alphabet'>\n    <div class = 'keyboard' *ngFor = 'let letter of row'>{{letter}}</div>\n  </div>\n  \n</div>"
 
 /***/ }),
 
@@ -203,7 +203,13 @@ __webpack_require__.r(__webpack_exports__);
 var HangmanComponent = /** @class */ (function () {
     function HangmanComponent(_titleService) {
         this._titleService = _titleService;
+        this.letters = [];
         this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
+        console.log(this.hangman.wordToGuess);
+        for (var i = 0; i < this.hangman.wordToGuess.length; i++) {
+            this.letters.push(this.hangman.wordToGuess[i]);
+        }
+        console.log(this.letters);
         this.setTitle();
     }
     HangmanComponent.prototype.ngOnInit = function () {
@@ -238,13 +244,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Hangman", function() { return Hangman; });
 var Hangman = /** @class */ (function () {
     function Hangman() {
+        this.alphabet = [
+            ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'],
+            ['N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+        ];
         this.guessesRemaining = 5;
         this.readTextFile('./assets/words.txt');
     }
     Hangman.prototype.readTextFile = function (file) {
         var _this = this;
         var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", file, true);
+        rawFile.open("GET", file, false);
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 if (rawFile.status === 200 || rawFile.status == 0) {
@@ -252,7 +262,6 @@ var Hangman = /** @class */ (function () {
                     _this.allWords = rawWords.split(' ');
                     var idx = Math.floor(Math.random() * (_this.allWords.length - 1));
                     _this.wordToGuess = _this.allWords[idx];
-                    console.log(_this.wordToGuess);
                 }
             }
         };

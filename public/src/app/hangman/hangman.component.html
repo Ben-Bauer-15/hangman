@@ -1,3 +1,10 @@
-<p>
-  hangman works!
-</p>
+<div class = 'title'>Hangman</div>
+<div class = 'hangmanContainer'>
+  <div class = 'underline' *ngFor = 'let letter of letters'>_</div>
+  
+  
+  <div *ngFor = 'let row of hangman.alphabet'>
+    <div class = 'keyboard' *ngFor = 'let letter of row'>{{letter}}</div>
+  </div>
+  
+</div>

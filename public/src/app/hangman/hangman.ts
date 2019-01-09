@@ -2,6 +2,9 @@ export class Hangman {
     guessesRemaining
     wordToGuess
     allWords
+    alphabet = [
+        ['A','B','C','D','E','F','G','H','I','J','K','L','M'],
+        ['N','O','P','Q','R','S','T','U','V','W','X','Y','Z']]
 
      constructor(){
         this.guessesRemaining = 5
@@ -12,7 +15,7 @@ export class Hangman {
         
         readTextFile(file) {
             var rawFile = new XMLHttpRequest();
-            rawFile.open("GET", file, true);
+            rawFile.open("GET", file, false);
             rawFile.onreadystatechange = () =>
             {
                 if(rawFile.readyState === 4)
@@ -23,7 +26,6 @@ export class Hangman {
                         this.allWords = rawWords.split(' ')
                         var idx = Math.floor(Math.random() * (this.allWords.length - 1))
                         this.wordToGuess = this.allWords[idx]
-                        console.log(this.wordToGuess)
                 }
             }
         }
