@@ -36,10 +36,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./hangman/hangman.component */ "./src/app/hangman/hangman.component.ts");
 
 
 
-var routes = [];
+
+var routes = [
+    { path: '', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] }
+];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
     }
@@ -74,7 +78,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<app-hangman></app-hangman>>"
+module.exports = "<router-outlet></router-outlet>"
 
 /***/ }),
 
@@ -236,20 +240,19 @@ var Hangman = /** @class */ (function () {
     function Hangman() {
         this.guessesRemaining = 5;
         this.readTextFile('./assets/words.txt');
-        var idx = Math.floor(Math.random() * (this.allWords.length - 1));
-        this.wordToGuess = this.allWords[idx];
-        console.log(this.wordToGuess);
     }
     Hangman.prototype.readTextFile = function (file) {
         var _this = this;
         var rawFile = new XMLHttpRequest();
-        rawFile.open("GET", file, false);
+        rawFile.open("GET", file, true);
         rawFile.onreadystatechange = function () {
             if (rawFile.readyState === 4) {
                 if (rawFile.status === 200 || rawFile.status == 0) {
                     var rawWords = rawFile.responseText;
-                    console.log(rawWords);
                     _this.allWords = rawWords.split(' ');
+                    var idx = Math.floor(Math.random() * (_this.allWords.length - 1));
+                    _this.wordToGuess = _this.allWords[idx];
+                    console.log(_this.wordToGuess);
                 }
             }
         };
