@@ -10,15 +10,9 @@ import { Title } from '@angular/platform-browser';
 })
 export class HangmanComponent implements OnInit {
   hangman : Hangman
-  letters = []
 
    constructor(private _titleService : Title) { 
     this.hangman = new Hangman()
-    console.log(this.hangman.wordToGuess)
-    for (var i = 0; i < this.hangman.wordToGuess.length; i++){
-      this.letters.push(this.hangman.wordToGuess[i])
-    }
-    console.log(this.letters)
 
     this.setTitle()
    }
@@ -28,5 +22,17 @@ export class HangmanComponent implements OnInit {
 
   setTitle(){
     this._titleService.setTitle("Hangman")
+  }
+
+  selectLetter(letter){
+    var letterObj = this.hangman.findLetterInDict(letter, this.hangman.alphabetDict)
+    if (!letterObj.clicked){
+      this.hangman.selectLetter(letter)
+    }
+    
+  }
+
+  newGame(){
+    this.hangman = new Hangman()
   }
 }

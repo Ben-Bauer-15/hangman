@@ -1,10 +1,19 @@
 <div class = 'title'>Hangman</div>
+<div id = 'guesses'>{{hangman.guessesRemaining}}</div>
 <div class = 'hangmanContainer'>
-  <div class = 'underline' *ngFor = 'let letter of letters'>_</div>
+  <div class = 'underline' *ngFor = 'let letter of hangman.secretWordLetters'>{{letter.placeholder}}</div>
   
   
-  <div *ngFor = 'let row of hangman.alphabet'>
-    <div class = 'keyboard' *ngFor = 'let letter of row'>{{letter}}</div>
-  </div>
+  <div *ngFor = 'let row of hangman.alphabetDict'>
+
+    <div 
+      *ngFor = 'let dict of row'
+      [ngClass] = "{'clicked' : dict.clicked}"
+      (click) = 'selectLetter(dict.letter)' 
+      class = 'keyboard' 
+      >{{dict.letter}}</div>
+    </div>
+
+  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>
   
 </div>
