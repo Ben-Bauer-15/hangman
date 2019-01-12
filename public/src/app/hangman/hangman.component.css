@@ -23,7 +23,7 @@
     margin-top: 2%;
 }
 
-#new{
+#new, #done{
     color: white;
     width: 71%;
     font-style: italic;
@@ -35,7 +35,12 @@
     border-radius: 5px;
 }
 
-#new:hover {
+#done {
+    font-size: 2rem;
+    width: 25%;
+}
+
+#new:hover, #done:hover {
     background-color: #24639a;
 }
 
@@ -67,7 +72,7 @@
     background-color: #677077;
 }
 
-#connect{
+#connect, #linkToShare, #chatRoom, #activeChats {
     padding: 7px;
     border: 1px solid gray;
     position: absolute;
@@ -76,8 +81,47 @@
     box-sizing: border-box;
     border-radius: 5px;
     top: 2%;
-    animation: pulsate 4s infinite;
 }
+
+#chatRoom {
+    left: 90%;
+    animation: pulsate 3s infinite;
+}
+
+#activeChats {
+    left: 90%;
+    max-height: 320px;
+    overflow-y: scroll;
+    /* animation:   */
+}
+
+
+
+#connect {
+    animation: pulsate 3s infinite;
+}
+
+#linkToShare {
+    animation: displayLink 0.75s forwards ease-out;
+    text-align: center;
+}
+
+@keyframes displayLink {
+    0%{
+        left: -45%;
+    }
+    100%{
+        left: 2%;
+    }
+}
+
+
+#connect:hover, #chatRoom:hover{
+    background-color: #b5b5b7;
+    color: #252938;
+    cursor: pointer;
+}
+
 
 @keyframes pulsate {
     0% {
@@ -89,10 +133,4 @@
     100% {
         box-shadow: none;
     }
-}
-
-#connect:hover{
-    background-color: #b5b5b7;
-    color: #252938;
-    cursor: pointer;
 }

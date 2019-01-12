@@ -10,6 +10,8 @@ import { Title } from '@angular/platform-browser';
 })
 export class HangmanComponent implements OnInit {
   hangman : Hangman
+  clickedOnPlayMulti = false
+  chatsActivated = false
 
    constructor(private _titleService : Title) { 
     this.hangman = new Hangman()
@@ -34,5 +36,21 @@ export class HangmanComponent implements OnInit {
 
   newGame(){
     this.hangman = new Hangman()
+  }
+
+  displayLinkToShare(){
+    this.clickedOnPlayMulti = true
+  }
+
+  hideLinkDiv(){
+    this.clickedOnPlayMulti = false
+  }
+
+  displayActiveChats(){
+    this.chatsActivated = true
+  } 
+  
+  hideActiveChats(){
+    this.chatsActivated = false
   }
 }

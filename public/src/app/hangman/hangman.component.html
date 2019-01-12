@@ -18,4 +18,22 @@
   
 </div>
 
-<div id = 'connect'>Play Multiplayer!</div>
+<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>
+
+<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>
+  <h3>Share this link with a friend to play together!</h3>
+  <h4>ben-bauer.net</h4>
+  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>
+</div>
+
+<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
+<div *ngIf = 'chatsActivated' id = 'activeChats'>
+  <h4>You: hey! What letter should I guess next?</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+  <h4>You: hey!</h4>
+</div>
