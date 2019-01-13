@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { HangmanComponent } from './hangman/hangman.component';
 
 const routes: Routes = [
-  {path : '', component : HangmanComponent}
+  {path : '', component : HangmanComponent},
+  { path : 'room/:id', component : HangmanComponent}
 ];
 
 @NgModule({

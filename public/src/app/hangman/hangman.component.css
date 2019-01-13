@@ -23,7 +23,7 @@
     margin-top: 2%;
 }
 
-#new, #done{
+#new, #done, .newChat button{
     color: white;
     width: 71%;
     font-style: italic;
@@ -40,7 +40,7 @@
     width: 25%;
 }
 
-#new:hover, #done:hover {
+#new:hover, #done:hover, .newChat button:hover {
     background-color: #24639a;
 }
 
@@ -89,10 +89,31 @@
 }
 
 #activeChats {
-    left: 90%;
-    max-height: 320px;
+    left: 78%;
+    height: 320px;
+    width: 19%;
+    padding: 0;
     overflow-y: scroll;
-    /* animation:   */
+    -webkit-animation: displayChats 0.4s forwards;
+    animation: displayChats 0.4s forwards;
+}
+
+#activeChats h4 {
+    margin-left: 7px;
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+
+@keyframes displayChats{
+    0%{
+        left: 100%;
+    }
+    90%{
+        left: 75%;
+    }
+    100%{
+        left: 78%;
+    }
 }
 
 
@@ -102,7 +123,7 @@
 }
 
 #linkToShare {
-    animation: displayLink 0.75s forwards ease-out;
+    animation: displayLink 0.4s forwards ease-out;
     text-align: center;
 }
 
@@ -110,8 +131,11 @@
     0%{
         left: -45%;
     }
+    90%{
+        left: 4%;
+    }
     100%{
-        left: 2%;
+        left: 1%;
     }
 }
 
@@ -133,4 +157,26 @@
     100% {
         box-shadow: none;
     }
+}
+
+.newChat {
+    text-align: center;
+    height: 11%;
+    background-color: #5d7394;
+    border-top: 1px solid gray;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 89%;
+}
+
+.newChat input {
+    margin-right: 20px;
+    margin-top: 3px;
+    height: 55%;
+    border-radius: 5px;
+}
+
+.newChat button {
+    width: 55px;
+    font-size: 13px;
 }

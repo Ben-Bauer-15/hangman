@@ -42,7 +42,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [
-    { path: '', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] }
+    { path: '', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
+    { path: 'room/:id', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -167,7 +168,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    font-style: italic;\n}\n.underline{\n    margin-top: 0%;\n    font-size: 7em;\n    margin-bottom: 3%;\n    margin-right: 3%;\n    margin-top: -1%;\n    color: #f2b362;\n    margin-right: 1%;\n}\n.hangmanContainer{\n    text-align: center;\n}\n#guesses{\n    text-align: center;\n    font-size: 4em;\n    margin-top: 2%;\n}\n#new, #done{\n    color: white;\n    width: 71%;\n    font-style: italic;\n    cursor: pointer;\n    font-size: 4.5rem;\n    font-family: inherit;\n    background-color: #337ab7;\n    border-color: #2e6da4;\n    border-radius: 5px;\n}\n#done {\n    font-size: 2rem;\n    width: 25%;\n}\n#new:hover, #done:hover {\n    background-color: #24639a;\n}\n.underline, .keyboard {\n    display: inline-block;\n    vertical-align: top;\n    \n}\n.keyboard{\n    font-style: italic;\n    box-sizing: border-box;\n    margin-top: 0;\n    border: 1px solid gray;\n    border-radius: 5px;\n    width: 5%;\n    font-size: 3em;\n    padding: 7px;\n    margin-right: 5px;\n    margin-bottom: 1%;\n}\n.keyboard:hover {\n    background-color: #677077;\n    cursor: pointer;\n}\n.clicked {\n    background-color: #677077;\n}\n#connect, #linkToShare, #chatRoom, #activeChats {\n    padding: 7px;\n    border: 1px solid gray;\n    position: absolute;\n    left: 1%;\n    font-size: 1.2em;\n    box-sizing: border-box;\n    border-radius: 5px;\n    top: 2%;\n}\n#chatRoom {\n    left: 90%;\n    -webkit-animation: pulsate 3s infinite;\n            animation: pulsate 3s infinite;\n}\n#activeChats {\n    left: 90%;\n    max-height: 320px;\n    overflow-y: scroll;\n    /* animation:   */\n}\n#connect {\n    -webkit-animation: pulsate 3s infinite;\n            animation: pulsate 3s infinite;\n}\n#linkToShare {\n    -webkit-animation: displayLink 0.75s forwards ease-out;\n            animation: displayLink 0.75s forwards ease-out;\n    text-align: center;\n}\n@-webkit-keyframes displayLink {\n    0%{\n        left: -45%;\n    }\n    100%{\n        left: 2%;\n    }\n}\n@keyframes displayLink {\n    0%{\n        left: -45%;\n    }\n    100%{\n        left: 2%;\n    }\n}\n#connect:hover, #chatRoom:hover{\n    background-color: #b5b5b7;\n    color: #252938;\n    cursor: pointer;\n}\n@-webkit-keyframes pulsate {\n    0% {\n        box-shadow: none;\n    }\n    50% {\n        box-shadow: 0px 0px 50px 30px grey;\n    }\n    100% {\n        box-shadow: none;\n    }\n}\n@keyframes pulsate {\n    0% {\n        box-shadow: none;\n    }\n    50% {\n        box-shadow: 0px 0px 50px 30px grey;\n    }\n    100% {\n        box-shadow: none;\n    }\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaGFuZ21hbi9oYW5nbWFuLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLG1CQUFtQjtDQUN0QjtBQUNEO0lBQ0ksZUFBZTtJQUNmLGVBQWU7SUFDZixrQkFBa0I7SUFDbEIsaUJBQWlCO0lBQ2pCLGdCQUFnQjtJQUNoQixlQUFlO0lBQ2YsaUJBQWlCO0NBQ3BCO0FBRUQ7SUFDSSxtQkFBbUI7Q0FDdEI7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsZUFBZTtDQUNsQjtBQUVEO0lBQ0ksYUFBYTtJQUNiLFdBQVc7SUFDWCxtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLGtCQUFrQjtJQUNsQixxQkFBcUI7SUFDckIsMEJBQTBCO0lBQzFCLHNCQUFzQjtJQUN0QixtQkFBbUI7Q0FDdEI7QUFFRDtJQUNJLGdCQUFnQjtJQUNoQixXQUFXO0NBQ2Q7QUFFRDtJQUNJLDBCQUEwQjtDQUM3QjtBQUVEO0lBQ0ksc0JBQXNCO0lBQ3RCLG9CQUFvQjs7Q0FFdkI7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQix1QkFBdUI7SUFDdkIsY0FBYztJQUNkLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIsVUFBVTtJQUNWLGVBQWU7SUFDZixhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGtCQUFrQjtDQUNyQjtBQUVEO0lBQ0ksMEJBQTBCO0lBQzFCLGdCQUFnQjtDQUNuQjtBQUVEO0lBQ0ksMEJBQTBCO0NBQzdCO0FBRUQ7SUFDSSxhQUFhO0lBQ2IsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixTQUFTO0lBQ1QsaUJBQWlCO0lBQ2pCLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIsUUFBUTtDQUNYO0FBRUQ7SUFDSSxVQUFVO0lBQ1YsdUNBQStCO1lBQS9CLCtCQUErQjtDQUNsQztBQUVEO0lBQ0ksVUFBVTtJQUNWLGtCQUFrQjtJQUNsQixtQkFBbUI7SUFDbkIsa0JBQWtCO0NBQ3JCO0FBSUQ7SUFDSSx1Q0FBK0I7WUFBL0IsK0JBQStCO0NBQ2xDO0FBRUQ7SUFDSSx1REFBK0M7WUFBL0MsK0NBQStDO0lBQy9DLG1CQUFtQjtDQUN0QjtBQUVEO0lBQ0k7UUFDSSxXQUFXO0tBQ2Q7SUFDRDtRQUNJLFNBQVM7S0FDWjtDQUNKO0FBUEQ7SUFDSTtRQUNJLFdBQVc7S0FDZDtJQUNEO1FBQ0ksU0FBUztLQUNaO0NBQ0o7QUFHRDtJQUNJLDBCQUEwQjtJQUMxQixlQUFlO0lBQ2YsZ0JBQWdCO0NBQ25CO0FBR0Q7SUFDSTtRQUNJLGlCQUFpQjtLQUNwQjtJQUNEO1FBQ0ksbUNBQW1DO0tBQ3RDO0lBQ0Q7UUFDSSxpQkFBaUI7S0FDcEI7Q0FDSjtBQVZEO0lBQ0k7UUFDSSxpQkFBaUI7S0FDcEI7SUFDRDtRQUNJLG1DQUFtQztLQUN0QztJQUNEO1FBQ0ksaUJBQWlCO0tBQ3BCO0NBQ0oiLCJmaWxlIjoic3JjL2FwcC9oYW5nbWFuL2hhbmdtYW4uY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi50aXRsZSB7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgIGZvbnQtc2l6ZTogNmVtO1xuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcbn1cbi51bmRlcmxpbmV7XG4gICAgbWFyZ2luLXRvcDogMCU7XG4gICAgZm9udC1zaXplOiA3ZW07XG4gICAgbWFyZ2luLWJvdHRvbTogMyU7XG4gICAgbWFyZ2luLXJpZ2h0OiAzJTtcbiAgICBtYXJnaW4tdG9wOiAtMSU7XG4gICAgY29sb3I6ICNmMmIzNjI7XG4gICAgbWFyZ2luLXJpZ2h0OiAxJTtcbn1cblxuLmhhbmdtYW5Db250YWluZXJ7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xufVxuXG4jZ3Vlc3Nlc3tcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgZm9udC1zaXplOiA0ZW07XG4gICAgbWFyZ2luLXRvcDogMiU7XG59XG5cbiNuZXcsICNkb25le1xuICAgIGNvbG9yOiB3aGl0ZTtcbiAgICB3aWR0aDogNzElO1xuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcbiAgICBjdXJzb3I6IHBvaW50ZXI7XG4gICAgZm9udC1zaXplOiA0LjVyZW07XG4gICAgZm9udC1mYW1pbHk6IGluaGVyaXQ7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzMzN2FiNztcbiAgICBib3JkZXItY29sb3I6ICMyZTZkYTQ7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xufVxuXG4jZG9uZSB7XG4gICAgZm9udC1zaXplOiAycmVtO1xuICAgIHdpZHRoOiAyNSU7XG59XG5cbiNuZXc6aG92ZXIsICNkb25lOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjQ2MzlhO1xufVxuXG4udW5kZXJsaW5lLCAua2V5Ym9hcmQge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICB2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICAgIFxufVxuXG4ua2V5Ym9hcmR7XG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgbWFyZ2luLXRvcDogMDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBncmF5O1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICB3aWR0aDogNSU7XG4gICAgZm9udC1zaXplOiAzZW07XG4gICAgcGFkZGluZzogN3B4O1xuICAgIG1hcmdpbi1yaWdodDogNXB4O1xuICAgIG1hcmdpbi1ib3R0b206IDElO1xufVxuXG4ua2V5Ym9hcmQ6aG92ZXIge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICM2NzcwNzc7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uY2xpY2tlZCB7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzY3NzA3Nztcbn1cblxuI2Nvbm5lY3QsICNsaW5rVG9TaGFyZSwgI2NoYXRSb29tLCAjYWN0aXZlQ2hhdHMge1xuICAgIHBhZGRpbmc6IDdweDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBncmF5O1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBsZWZ0OiAxJTtcbiAgICBmb250LXNpemU6IDEuMmVtO1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHRvcDogMiU7XG59XG5cbiNjaGF0Um9vbSB7XG4gICAgbGVmdDogOTAlO1xuICAgIGFuaW1hdGlvbjogcHVsc2F0ZSAzcyBpbmZpbml0ZTtcbn1cblxuI2FjdGl2ZUNoYXRzIHtcbiAgICBsZWZ0OiA5MCU7XG4gICAgbWF4LWhlaWdodDogMzIwcHg7XG4gICAgb3ZlcmZsb3cteTogc2Nyb2xsO1xuICAgIC8qIGFuaW1hdGlvbjogICAqL1xufVxuXG5cblxuI2Nvbm5lY3Qge1xuICAgIGFuaW1hdGlvbjogcHVsc2F0ZSAzcyBpbmZpbml0ZTtcbn1cblxuI2xpbmtUb1NoYXJlIHtcbiAgICBhbmltYXRpb246IGRpc3BsYXlMaW5rIDAuNzVzIGZvcndhcmRzIGVhc2Utb3V0O1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuQGtleWZyYW1lcyBkaXNwbGF5TGluayB7XG4gICAgMCV7XG4gICAgICAgIGxlZnQ6IC00NSU7XG4gICAgfVxuICAgIDEwMCV7XG4gICAgICAgIGxlZnQ6IDIlO1xuICAgIH1cbn1cblxuXG4jY29ubmVjdDpob3ZlciwgI2NoYXRSb29tOmhvdmVye1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNiNWI1Yjc7XG4gICAgY29sb3I6ICMyNTI5Mzg7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG5cbkBrZXlmcmFtZXMgcHVsc2F0ZSB7XG4gICAgMCUge1xuICAgICAgICBib3gtc2hhZG93OiBub25lO1xuICAgIH1cbiAgICA1MCUge1xuICAgICAgICBib3gtc2hhZG93OiAwcHggMHB4IDUwcHggMzBweCBncmV5O1xuICAgIH1cbiAgICAxMDAlIHtcbiAgICAgICAgYm94LXNoYWRvdzogbm9uZTtcbiAgICB9XG59Il19 */"
+module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    font-style: italic;\n}\n.underline{\n    margin-top: 0%;\n    font-size: 7em;\n    margin-bottom: 3%;\n    margin-right: 3%;\n    margin-top: -1%;\n    color: #f2b362;\n    margin-right: 1%;\n}\n.hangmanContainer{\n    text-align: center;\n}\n#guesses{\n    text-align: center;\n    font-size: 4em;\n    margin-top: 2%;\n}\n#new, #done, .newChat button{\n    color: white;\n    width: 71%;\n    font-style: italic;\n    cursor: pointer;\n    font-size: 4.5rem;\n    font-family: inherit;\n    background-color: #337ab7;\n    border-color: #2e6da4;\n    border-radius: 5px;\n}\n#done {\n    font-size: 2rem;\n    width: 25%;\n}\n#new:hover, #done:hover, .newChat button:hover {\n    background-color: #24639a;\n}\n.underline, .keyboard {\n    display: inline-block;\n    vertical-align: top;\n    \n}\n.keyboard{\n    font-style: italic;\n    box-sizing: border-box;\n    margin-top: 0;\n    border: 1px solid gray;\n    border-radius: 5px;\n    width: 5%;\n    font-size: 3em;\n    padding: 7px;\n    margin-right: 5px;\n    margin-bottom: 1%;\n}\n.keyboard:hover {\n    background-color: #677077;\n    cursor: pointer;\n}\n.clicked {\n    background-color: #677077;\n}\n#connect, #linkToShare, #chatRoom, #activeChats {\n    padding: 7px;\n    border: 1px solid gray;\n    position: absolute;\n    left: 1%;\n    font-size: 1.2em;\n    box-sizing: border-box;\n    border-radius: 5px;\n    top: 2%;\n}\n#chatRoom {\n    left: 90%;\n    -webkit-animation: pulsate 3s infinite;\n            animation: pulsate 3s infinite;\n}\n#activeChats {\n    left: 78%;\n    height: 320px;\n    width: 19%;\n    padding: 0;\n    overflow-y: scroll;\n    -webkit-animation: displayChats 0.4s forwards;\n    animation: displayChats 0.4s forwards;\n}\n#activeChats h4 {\n    margin-left: 7px;\n    margin-top: 0;\n    margin-bottom: 40px;\n}\n@-webkit-keyframes displayChats{\n    0%{\n        left: 100%;\n    }\n    90%{\n        left: 75%;\n    }\n    100%{\n        left: 78%;\n    }\n}\n@keyframes displayChats{\n    0%{\n        left: 100%;\n    }\n    90%{\n        left: 75%;\n    }\n    100%{\n        left: 78%;\n    }\n}\n#connect {\n    -webkit-animation: pulsate 3s infinite;\n            animation: pulsate 3s infinite;\n}\n#linkToShare {\n    -webkit-animation: displayLink 0.4s forwards ease-out;\n            animation: displayLink 0.4s forwards ease-out;\n    text-align: center;\n}\n@-webkit-keyframes displayLink {\n    0%{\n        left: -45%;\n    }\n    90%{\n        left: 4%;\n    }\n    100%{\n        left: 1%;\n    }\n}\n@keyframes displayLink {\n    0%{\n        left: -45%;\n    }\n    90%{\n        left: 4%;\n    }\n    100%{\n        left: 1%;\n    }\n}\n#connect:hover, #chatRoom:hover{\n    background-color: #b5b5b7;\n    color: #252938;\n    cursor: pointer;\n}\n@-webkit-keyframes pulsate {\n    0% {\n        box-shadow: none;\n    }\n    50% {\n        box-shadow: 0px 0px 50px 30px grey;\n    }\n    100% {\n        box-shadow: none;\n    }\n}\n@keyframes pulsate {\n    0% {\n        box-shadow: none;\n    }\n    50% {\n        box-shadow: 0px 0px 50px 30px grey;\n    }\n    100% {\n        box-shadow: none;\n    }\n}\n.newChat {\n    text-align: center;\n    height: 11%;\n    background-color: #5d7394;\n    border-top: 1px solid gray;\n    position: -webkit-sticky;\n    position: sticky;\n    top: 89%;\n}\n.newChat input {\n    margin-right: 20px;\n    margin-top: 3px;\n    height: 55%;\n    border-radius: 5px;\n}\n.newChat button {\n    width: 55px;\n    font-size: 13px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvaGFuZ21hbi9oYW5nbWFuLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxtQkFBbUI7SUFDbkIsZUFBZTtJQUNmLG1CQUFtQjtDQUN0QjtBQUNEO0lBQ0ksZUFBZTtJQUNmLGVBQWU7SUFDZixrQkFBa0I7SUFDbEIsaUJBQWlCO0lBQ2pCLGdCQUFnQjtJQUNoQixlQUFlO0lBQ2YsaUJBQWlCO0NBQ3BCO0FBRUQ7SUFDSSxtQkFBbUI7Q0FDdEI7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQixlQUFlO0lBQ2YsZUFBZTtDQUNsQjtBQUVEO0lBQ0ksYUFBYTtJQUNiLFdBQVc7SUFDWCxtQkFBbUI7SUFDbkIsZ0JBQWdCO0lBQ2hCLGtCQUFrQjtJQUNsQixxQkFBcUI7SUFDckIsMEJBQTBCO0lBQzFCLHNCQUFzQjtJQUN0QixtQkFBbUI7Q0FDdEI7QUFFRDtJQUNJLGdCQUFnQjtJQUNoQixXQUFXO0NBQ2Q7QUFFRDtJQUNJLDBCQUEwQjtDQUM3QjtBQUVEO0lBQ0ksc0JBQXNCO0lBQ3RCLG9CQUFvQjs7Q0FFdkI7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQix1QkFBdUI7SUFDdkIsY0FBYztJQUNkLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIsVUFBVTtJQUNWLGVBQWU7SUFDZixhQUFhO0lBQ2Isa0JBQWtCO0lBQ2xCLGtCQUFrQjtDQUNyQjtBQUVEO0lBQ0ksMEJBQTBCO0lBQzFCLGdCQUFnQjtDQUNuQjtBQUVEO0lBQ0ksMEJBQTBCO0NBQzdCO0FBRUQ7SUFDSSxhQUFhO0lBQ2IsdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixTQUFTO0lBQ1QsaUJBQWlCO0lBQ2pCLHVCQUF1QjtJQUN2QixtQkFBbUI7SUFDbkIsUUFBUTtDQUNYO0FBRUQ7SUFDSSxVQUFVO0lBQ1YsdUNBQStCO1lBQS9CLCtCQUErQjtDQUNsQztBQUVEO0lBQ0ksVUFBVTtJQUNWLGNBQWM7SUFDZCxXQUFXO0lBQ1gsV0FBVztJQUNYLG1CQUFtQjtJQUNuQiw4Q0FBOEM7SUFDOUMsc0NBQXNDO0NBQ3pDO0FBRUQ7SUFDSSxpQkFBaUI7SUFDakIsY0FBYztJQUNkLG9CQUFvQjtDQUN2QjtBQUVEO0lBQ0k7UUFDSSxXQUFXO0tBQ2Q7SUFDRDtRQUNJLFVBQVU7S0FDYjtJQUNEO1FBQ0ksVUFBVTtLQUNiO0NBQ0o7QUFWRDtJQUNJO1FBQ0ksV0FBVztLQUNkO0lBQ0Q7UUFDSSxVQUFVO0tBQ2I7SUFDRDtRQUNJLFVBQVU7S0FDYjtDQUNKO0FBSUQ7SUFDSSx1Q0FBK0I7WUFBL0IsK0JBQStCO0NBQ2xDO0FBRUQ7SUFDSSxzREFBOEM7WUFBOUMsOENBQThDO0lBQzlDLG1CQUFtQjtDQUN0QjtBQUVEO0lBQ0k7UUFDSSxXQUFXO0tBQ2Q7SUFDRDtRQUNJLFNBQVM7S0FDWjtJQUNEO1FBQ0ksU0FBUztLQUNaO0NBQ0o7QUFWRDtJQUNJO1FBQ0ksV0FBVztLQUNkO0lBQ0Q7UUFDSSxTQUFTO0tBQ1o7SUFDRDtRQUNJLFNBQVM7S0FDWjtDQUNKO0FBR0Q7SUFDSSwwQkFBMEI7SUFDMUIsZUFBZTtJQUNmLGdCQUFnQjtDQUNuQjtBQUdEO0lBQ0k7UUFDSSxpQkFBaUI7S0FDcEI7SUFDRDtRQUNJLG1DQUFtQztLQUN0QztJQUNEO1FBQ0ksaUJBQWlCO0tBQ3BCO0NBQ0o7QUFWRDtJQUNJO1FBQ0ksaUJBQWlCO0tBQ3BCO0lBQ0Q7UUFDSSxtQ0FBbUM7S0FDdEM7SUFDRDtRQUNJLGlCQUFpQjtLQUNwQjtDQUNKO0FBRUQ7SUFDSSxtQkFBbUI7SUFDbkIsWUFBWTtJQUNaLDBCQUEwQjtJQUMxQiwyQkFBMkI7SUFDM0IseUJBQXlCO0lBQ3pCLGlCQUFpQjtJQUNqQixTQUFTO0NBQ1o7QUFFRDtJQUNJLG1CQUFtQjtJQUNuQixnQkFBZ0I7SUFDaEIsWUFBWTtJQUNaLG1CQUFtQjtDQUN0QjtBQUVEO0lBQ0ksWUFBWTtJQUNaLGdCQUFnQjtDQUNuQiIsImZpbGUiOiJzcmMvYXBwL2hhbmdtYW4vaGFuZ21hbi5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRpdGxlIHtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG4gICAgZm9udC1zaXplOiA2ZW07XG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xufVxuLnVuZGVybGluZXtcbiAgICBtYXJnaW4tdG9wOiAwJTtcbiAgICBmb250LXNpemU6IDdlbTtcbiAgICBtYXJnaW4tYm90dG9tOiAzJTtcbiAgICBtYXJnaW4tcmlnaHQ6IDMlO1xuICAgIG1hcmdpbi10b3A6IC0xJTtcbiAgICBjb2xvcjogI2YyYjM2MjtcbiAgICBtYXJnaW4tcmlnaHQ6IDElO1xufVxuXG4uaGFuZ21hbkNvbnRhaW5lcntcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbiNndWVzc2Vze1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBmb250LXNpemU6IDRlbTtcbiAgICBtYXJnaW4tdG9wOiAyJTtcbn1cblxuI25ldywgI2RvbmUsIC5uZXdDaGF0IGJ1dHRvbntcbiAgICBjb2xvcjogd2hpdGU7XG4gICAgd2lkdGg6IDcxJTtcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGZvbnQtc2l6ZTogNC41cmVtO1xuICAgIGZvbnQtZmFtaWx5OiBpbmhlcml0O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICMzMzdhYjc7XG4gICAgYm9yZGVyLWNvbG9yOiAjMmU2ZGE0O1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbn1cblxuI2RvbmUge1xuICAgIGZvbnQtc2l6ZTogMnJlbTtcbiAgICB3aWR0aDogMjUlO1xufVxuXG4jbmV3OmhvdmVyLCAjZG9uZTpob3ZlciwgLm5ld0NoYXQgYnV0dG9uOmhvdmVyIHtcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjMjQ2MzlhO1xufVxuXG4udW5kZXJsaW5lLCAua2V5Ym9hcmQge1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICB2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICAgIFxufVxuXG4ua2V5Ym9hcmR7XG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgbWFyZ2luLXRvcDogMDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBncmF5O1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbiAgICB3aWR0aDogNSU7XG4gICAgZm9udC1zaXplOiAzZW07XG4gICAgcGFkZGluZzogN3B4O1xuICAgIG1hcmdpbi1yaWdodDogNXB4O1xuICAgIG1hcmdpbi1ib3R0b206IDElO1xufVxuXG4ua2V5Ym9hcmQ6aG92ZXIge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICM2NzcwNzc7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xufVxuXG4uY2xpY2tlZCB7XG4gICAgYmFja2dyb3VuZC1jb2xvcjogIzY3NzA3Nztcbn1cblxuI2Nvbm5lY3QsICNsaW5rVG9TaGFyZSwgI2NoYXRSb29tLCAjYWN0aXZlQ2hhdHMge1xuICAgIHBhZGRpbmc6IDdweDtcbiAgICBib3JkZXI6IDFweCBzb2xpZCBncmF5O1xuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgICBsZWZ0OiAxJTtcbiAgICBmb250LXNpemU6IDEuMmVtO1xuICAgIGJveC1zaXppbmc6IGJvcmRlci1ib3g7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHRvcDogMiU7XG59XG5cbiNjaGF0Um9vbSB7XG4gICAgbGVmdDogOTAlO1xuICAgIGFuaW1hdGlvbjogcHVsc2F0ZSAzcyBpbmZpbml0ZTtcbn1cblxuI2FjdGl2ZUNoYXRzIHtcbiAgICBsZWZ0OiA3OCU7XG4gICAgaGVpZ2h0OiAzMjBweDtcbiAgICB3aWR0aDogMTklO1xuICAgIHBhZGRpbmc6IDA7XG4gICAgb3ZlcmZsb3cteTogc2Nyb2xsO1xuICAgIC13ZWJraXQtYW5pbWF0aW9uOiBkaXNwbGF5Q2hhdHMgMC40cyBmb3J3YXJkcztcbiAgICBhbmltYXRpb246IGRpc3BsYXlDaGF0cyAwLjRzIGZvcndhcmRzO1xufVxuXG4jYWN0aXZlQ2hhdHMgaDQge1xuICAgIG1hcmdpbi1sZWZ0OiA3cHg7XG4gICAgbWFyZ2luLXRvcDogMDtcbiAgICBtYXJnaW4tYm90dG9tOiA0MHB4O1xufVxuXG5Aa2V5ZnJhbWVzIGRpc3BsYXlDaGF0c3tcbiAgICAwJXtcbiAgICAgICAgbGVmdDogMTAwJTtcbiAgICB9XG4gICAgOTAle1xuICAgICAgICBsZWZ0OiA3NSU7XG4gICAgfVxuICAgIDEwMCV7XG4gICAgICAgIGxlZnQ6IDc4JTtcbiAgICB9XG59XG5cblxuXG4jY29ubmVjdCB7XG4gICAgYW5pbWF0aW9uOiBwdWxzYXRlIDNzIGluZmluaXRlO1xufVxuXG4jbGlua1RvU2hhcmUge1xuICAgIGFuaW1hdGlvbjogZGlzcGxheUxpbmsgMC40cyBmb3J3YXJkcyBlYXNlLW91dDtcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7XG59XG5cbkBrZXlmcmFtZXMgZGlzcGxheUxpbmsge1xuICAgIDAle1xuICAgICAgICBsZWZ0OiAtNDUlO1xuICAgIH1cbiAgICA5MCV7XG4gICAgICAgIGxlZnQ6IDQlO1xuICAgIH1cbiAgICAxMDAle1xuICAgICAgICBsZWZ0OiAxJTtcbiAgICB9XG59XG5cblxuI2Nvbm5lY3Q6aG92ZXIsICNjaGF0Um9vbTpob3ZlcntcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjYjViNWI3O1xuICAgIGNvbG9yOiAjMjUyOTM4O1xuICAgIGN1cnNvcjogcG9pbnRlcjtcbn1cblxuXG5Aa2V5ZnJhbWVzIHB1bHNhdGUge1xuICAgIDAlIHtcbiAgICAgICAgYm94LXNoYWRvdzogbm9uZTtcbiAgICB9XG4gICAgNTAlIHtcbiAgICAgICAgYm94LXNoYWRvdzogMHB4IDBweCA1MHB4IDMwcHggZ3JleTtcbiAgICB9XG4gICAgMTAwJSB7XG4gICAgICAgIGJveC1zaGFkb3c6IG5vbmU7XG4gICAgfVxufVxuXG4ubmV3Q2hhdCB7XG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xuICAgIGhlaWdodDogMTElO1xuICAgIGJhY2tncm91bmQtY29sb3I6ICM1ZDczOTQ7XG4gICAgYm9yZGVyLXRvcDogMXB4IHNvbGlkIGdyYXk7XG4gICAgcG9zaXRpb246IC13ZWJraXQtc3RpY2t5O1xuICAgIHBvc2l0aW9uOiBzdGlja3k7XG4gICAgdG9wOiA4OSU7XG59XG5cbi5uZXdDaGF0IGlucHV0IHtcbiAgICBtYXJnaW4tcmlnaHQ6IDIwcHg7XG4gICAgbWFyZ2luLXRvcDogM3B4O1xuICAgIGhlaWdodDogNTUlO1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbn1cblxuLm5ld0NoYXQgYnV0dG9uIHtcbiAgICB3aWR0aDogNTVweDtcbiAgICBmb250LXNpemU6IDEzcHg7XG59Il19 */"
 
 /***/ }),
 
@@ -178,7 +179,7 @@ module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    fo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{hangman.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of hangman.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of hangman.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with a friend to play together!</h3>\n  <h4>ben-bauer.net</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <h4>You: hey! What letter should I guess next?</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n  <h4>You: hey!</h4>\n</div>"
+module.exports = "<div class = 'title'>Hangman</div>\n<div *ngIf = 'hangman' id = 'guesses'>{{hangman.guessesRemaining}}</div>\n<div *ngIf = 'hangman' class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of hangman.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of hangman.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message'>\n    <button>Send</button>\n  </div>\n  <h4>You: hey! What letter should I guess next?</h4>\n</div>"
 
 /***/ }),
 
@@ -196,31 +197,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _hangman__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./hangman */ "./src/app/hangman/hangman.ts");
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+
+
 
 
 
 
 var HangmanComponent = /** @class */ (function () {
-    function HangmanComponent(_titleService) {
+    function HangmanComponent(_titleService, _route) {
         this._titleService = _titleService;
+        this._route = _route;
         this.clickedOnPlayMulti = false;
         this.chatsActivated = false;
-        this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
         this.setTitle();
     }
     HangmanComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._route.params.subscribe(function (params) {
+            if (params['id']) {
+                _this.roomID = params['id'];
+                _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
+                _this.socket.on('welcome', function (data) {
+                    _this.socket.emit('joinRoom', { roomID: _this.roomID });
+                });
+                _this.socket.on('clicked', function (data) {
+                    console.log('game board updated', data.game);
+                    _this.hangman = data.game;
+                });
+                _this.socket.on('currentGameBoard', function (data) {
+                    _this.hangman = data.game;
+                });
+            }
+            else {
+                _this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
+                _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
+                _this.socket.on('welcome', function (data) {
+                    _this.roomID = data.roomID;
+                    _this.address = data.address;
+                    _this.linkToShare = "http://" + _this.address + ":5000/room/" + _this.roomID;
+                    _this.socket.emit('firstUser', { roomID: _this.roomID });
+                });
+                _this.socket.on('otherUser', function (data) {
+                    _this.socket.emit('currentGameBoard', { game: _this.hangman, roomID: _this.roomID });
+                });
+                _this.socket.on('clicked', function (data) {
+                    console.log('game board updated', data.game);
+                    _this.hangman = data.game;
+                });
+            }
+        });
     };
     HangmanComponent.prototype.setTitle = function () {
         this._titleService.setTitle("Hangman");
     };
     HangmanComponent.prototype.selectLetter = function (letter) {
+        console.log(this.hangman);
+        //there's a bug somewhere in here to fix. invited player isn't able to click a letter
+        //for some reason, only the properties, and not the methods, of the hangman object are being sent back and forth
         var letterObj = this.hangman.findLetterInDict(letter, this.hangman.alphabetDict);
         if (!letterObj.clicked) {
             this.hangman.selectLetter(letter);
+            this.socket.emit('clicked', { roomID: this.roomID, game: this.hangman });
         }
     };
     HangmanComponent.prototype.newGame = function () {
         this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
+        this.socket.emit('clicked', { roomID: this.roomID, game: this.hangman });
     };
     HangmanComponent.prototype.displayLinkToShare = function () {
         this.clickedOnPlayMulti = true;
@@ -240,7 +285,8 @@ var HangmanComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./hangman.component.html */ "./src/app/hangman/hangman.component.html"),
             styles: [__webpack_require__(/*! ./hangman.component.css */ "./src/app/hangman/hangman.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_3__["Title"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"]])
     ], HangmanComponent);
     return HangmanComponent;
 }());
@@ -360,7 +406,7 @@ __webpack_require__.r(__webpack_exports__);
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 var environment = {
-    production: false
+    production: true
 };
 /*
  * For easier debugging in development mode, you can import the following file
@@ -409,6 +455,17 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 
 module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/hangman/public/src/main.ts */"./src/main.ts");
 
+
+/***/ }),
+
+/***/ 3:
+/*!********************!*\
+  !*** ws (ignored) ***!
+  \********************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/* (ignored) */
 
 /***/ })
 

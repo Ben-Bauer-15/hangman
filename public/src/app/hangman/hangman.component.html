@@ -1,6 +1,6 @@
 <div class = 'title'>Hangman</div>
-<div id = 'guesses'>{{hangman.guessesRemaining}}</div>
-<div class = 'hangmanContainer'>
+<div *ngIf = 'hangman' id = 'guesses'>{{hangman.guessesRemaining}}</div>
+<div *ngIf = 'hangman' class = 'hangmanContainer'>
   <div class = 'underline' *ngFor = 'let letter of hangman.secretWordLetters'>{{letter.placeholder}}</div>
   
   
@@ -21,19 +21,16 @@
 <div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>
 
 <div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>
-  <h3>Share this link with a friend to play together!</h3>
-  <h4>ben-bauer.net</h4>
+  <h3>Share this link with your friends to play together!</h3>
+  <h4>{{linkToShare}}</h4>
   <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>
 </div>
 
 <div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
 <div *ngIf = 'chatsActivated' id = 'activeChats'>
+  <div class = 'newChat'>
+    <input type = 'text' placeholder = 'New Message'>
+    <button>Send</button>
+  </div>
   <h4>You: hey! What letter should I guess next?</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
-  <h4>You: hey!</h4>
 </div>
