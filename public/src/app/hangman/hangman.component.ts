@@ -15,6 +15,7 @@ export class HangmanComponent implements OnInit {
   socket;
   roomID;
   linkToShare;
+  gameBoard;
   address;
   clickedOnPlayMulti = false
   chatsActivated = false
@@ -28,6 +29,10 @@ export class HangmanComponent implements OnInit {
 
    ngOnInit() {
 
+    this.hangman = new Hangman()
+    this.gameBoard = this.hangman.gameBoard
+    
+
     this._route.params.subscribe((params : Params) => {
       if (params['id']){
         this.roomID = params['id']
@@ -37,17 +42,17 @@ export class HangmanComponent implements OnInit {
         })
 
         this.socket.on('clicked', (data) => {
-          console.log('game board updated', data.game)
-          this.hangman = data.game
+          this.gameBoard = data.game
+
         })
 
         this.socket.on('currentGameBoard', (data) => {
-          this.hangman = data.game
+          this.gameBoard = data.game
         })
       }
 
       else {
-        this.hangman = new Hangman()
+
 
         this.socket = io()
         this.socket.on('welcome', (data) => {
@@ -57,17 +62,14 @@ export class HangmanComponent implements OnInit {
          this.socket.emit('firstUser', {roomID : this.roomID})
        })
        this.socket.on('otherUser', (data) => {
-         this.socket.emit('currentGameBoard', {game : this.hangman, roomID : this.roomID})
+         this.socket.emit('currentGameBoard', {game : this.gameBoard, roomID : this.roomID})
        })
 
        this.socket.on('clicked', (data) => {
-         console.log('game board updated', data.game)
-         this.hangman = data.game
-       })
+         this.gameBoard = data.game
+        })
       }
     })
-
-
   }
 
   setTitle(){
@@ -75,20 +77,20 @@ export class HangmanComponent implements OnInit {
   }
 
   selectLetter(letter){
-    console.log(this.hangman)
 
     //there's a bug somewhere in here to fix. invited player isn't able to click a letter
     //for some reason, only the properties, and not the methods, of the hangman object are being sent back and forth
-    var letterObj = this.hangman.findLetterInDict(letter, this.hangman.alphabetDict)
+    var letterObj = this.hangman.findLetterInDict(letter, this.gameBoard.alphabetDict)
     if (!letterObj.clicked){
-      this.hangman.selectLetter(letter)
-      this.socket.emit('clicked', {roomID : this.roomID, game : this.hangman})
+      this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard)
+      this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
     }
   }
 
   newGame(){
     this.hangman = new Hangman()
-    this.socket.emit('clicked', {roomID : this.roomID, game : this.hangman})
+    this.gameBoard = this.hangman.gameBoard
+    this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
   }
 
   displayLinkToShare(){

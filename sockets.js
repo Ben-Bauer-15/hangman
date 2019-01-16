@@ -15,13 +15,11 @@ module.exports = function(server, IP){
         })
 
         socket.on('joinRoom', (data) => {
-            console.log(data)
             socket.join(data.roomID)
             socket.to(data.roomID).emit('otherUser', {message : "Someone else has joined!"})
         })
 
         socket.on('clicked', (data) => {
-            console.log('hangman game updated', data.game)
             socket.to(data.roomID).emit('clicked', {game : data.game})
         })
 

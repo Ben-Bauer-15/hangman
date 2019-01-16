@@ -1,17 +1,19 @@
 export class Hangman {
     alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-    guessesRemaining
-    wordToGuess
     allWords
-    correctGuesses = []
-    alphabetDict = [[],[]]
-    winner = false
-    loser = false
-    secretWordLetters = []
+
+
+    //this object of critical info will be sent back and forth over socket connections and used for HTML rendering
+    gameBoard = { guessesRemaining : 5,
+                wordToGuess : undefined,
+                correctGuesses : [],
+                alphabetDict : [[],[]],
+                winner : false,
+                loser : false,
+                secretWordLetters : [] }
+    
 
     constructor(){
-        this.guessesRemaining = 5
         this.readTextFile('./assets/words.txt')
     }
         
@@ -24,9 +26,10 @@ export class Hangman {
                     var rawWords = rawFile.responseText;
                     this.allWords = rawWords.split(' ')
                     var idx = Math.floor(Math.random() * (this.allWords.length - 1))
-                    this.wordToGuess = this.allWords[idx]
+                    this.gameBoard.wordToGuess = this.allWords[idx]
                     this.createAlphabetDict()
                     this.createSecretWordArray()
+
                 }
             }
         }
@@ -34,12 +37,12 @@ export class Hangman {
     }
 
     createSecretWordArray(){
-        for (var i = 0; i < this.wordToGuess.length; i++){
-            var secretLetter = this.wordToGuess[i].toUpperCase()
+        for (var i = 0; i < this.gameBoard.wordToGuess.length; i++){
+            var secretLetter = this.gameBoard.wordToGuess[i].toUpperCase()
 
-            this.secretWordLetters.push({letter : secretLetter, placeholder : '_'})
+            this.gameBoard.secretWordLetters.push({letter : secretLetter, placeholder : '_'})
 
-            var letterObj = this.findLetterInDict(secretLetter, this.alphabetDict)
+            var letterObj = this.findLetterInDict(secretLetter, this.gameBoard.alphabetDict)
             letterObj.isInSecretWord = true
         }
     }
@@ -48,29 +51,30 @@ export class Hangman {
         for (var i = 0; i < this.alphabet.length; i++){
             var letterFromAlphabet = this.alphabet[i]
             if (i < 13){
-                this.alphabetDict[0].push( {letter : letterFromAlphabet, isInSecretWord : false, clicked : false} )
+                this.gameBoard.alphabetDict[0].push( {letter : letterFromAlphabet, isInSecretWord : false, clicked : false} )
             }
             else{
-                this.alphabetDict[1].push( {letter : letterFromAlphabet, isInSecretWord : false, clicked : false} )
+                this.gameBoard.alphabetDict[1].push( {letter : letterFromAlphabet, isInSecretWord : false, clicked : false} )
             }
         }
     }
 
-    selectLetter(input){
+    selectLetter(inputLetter, gameBoard){
+
         
         var correctGuess = false
 
-        var letterObj = this.findLetterInDict(input, this.alphabetDict)
+        var letterObj = this.findLetterInDict(inputLetter, gameBoard.alphabetDict)
         letterObj.clicked = true
-        for (var i = 0; i < this.secretWordLetters.length; i++){
-            var secretLetterObj = this.secretWordLetters[i]
+        for (var i = 0; i < gameBoard.secretWordLetters.length; i++){
+            var secretLetterObj = gameBoard.secretWordLetters[i]
             
-            if (secretLetterObj.letter == input){
+            if (secretLetterObj.letter == inputLetter){
                 
-                secretLetterObj.placeholder = input.toLowerCase()
-                this.correctGuesses.push(input)
-                if (this.correctGuesses.length == this.secretWordLetters.length){
-                    this.winner = true
+                secretLetterObj.placeholder = inputLetter.toLowerCase()
+                gameBoard.correctGuesses.push(inputLetter)
+                if (gameBoard.correctGuesses.length == gameBoard.secretWordLetters.length){
+                    gameBoard.winner = true
                     alert('You won!')
                 }
                 correctGuess = true
@@ -78,11 +82,13 @@ export class Hangman {
         }
 
         if (!correctGuess){
-            this.guessesRemaining --
+            gameBoard.guessesRemaining --
         }
-        if (this.guessesRemaining == 0 && this.correctGuesses.length != this.secretWordLetters.length && !this.winner){
-            alert('You lost. The correct answer was: ' + this.wordToGuess)
+        if (gameBoard.guessesRemaining == 0 && gameBoard.correctGuesses.length != gameBoard.secretWordLetters.length && !gameBoard.winner){
+            alert('You lost. The correct answer was: ' + gameBoard.wordToGuess)
         }
+
+        return gameBoard
     }
 
     findLetterInDict(input, dict){
@@ -94,4 +100,5 @@ export class Hangman {
             }
         }
     }
+
 }

@@ -179,7 +179,7 @@ module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    fo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = 'title'>Hangman</div>\n<div *ngIf = 'hangman' id = 'guesses'>{{hangman.guessesRemaining}}</div>\n<div *ngIf = 'hangman' class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of hangman.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of hangman.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message'>\n    <button>Send</button>\n  </div>\n  <h4>You: hey! What letter should I guess next?</h4>\n</div>"
+module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message'>\n    <button>Send</button>\n  </div>\n  <h4>You: hey! What letter should I guess next?</h4>\n</div>"
 
 /***/ }),
 
@@ -216,6 +216,8 @@ var HangmanComponent = /** @class */ (function () {
     }
     HangmanComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
+        this.gameBoard = this.hangman.gameBoard;
         this._route.params.subscribe(function (params) {
             if (params['id']) {
                 _this.roomID = params['id'];
@@ -224,15 +226,13 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('joinRoom', { roomID: _this.roomID });
                 });
                 _this.socket.on('clicked', function (data) {
-                    console.log('game board updated', data.game);
-                    _this.hangman = data.game;
+                    _this.gameBoard = data.game;
                 });
                 _this.socket.on('currentGameBoard', function (data) {
-                    _this.hangman = data.game;
+                    _this.gameBoard = data.game;
                 });
             }
             else {
-                _this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
                 _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
                 _this.socket.on('welcome', function (data) {
                     _this.roomID = data.roomID;
@@ -241,11 +241,10 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('firstUser', { roomID: _this.roomID });
                 });
                 _this.socket.on('otherUser', function (data) {
-                    _this.socket.emit('currentGameBoard', { game: _this.hangman, roomID: _this.roomID });
+                    _this.socket.emit('currentGameBoard', { game: _this.gameBoard, roomID: _this.roomID });
                 });
                 _this.socket.on('clicked', function (data) {
-                    console.log('game board updated', data.game);
-                    _this.hangman = data.game;
+                    _this.gameBoard = data.game;
                 });
             }
         });
@@ -254,18 +253,18 @@ var HangmanComponent = /** @class */ (function () {
         this._titleService.setTitle("Hangman");
     };
     HangmanComponent.prototype.selectLetter = function (letter) {
-        console.log(this.hangman);
         //there's a bug somewhere in here to fix. invited player isn't able to click a letter
         //for some reason, only the properties, and not the methods, of the hangman object are being sent back and forth
-        var letterObj = this.hangman.findLetterInDict(letter, this.hangman.alphabetDict);
+        var letterObj = this.hangman.findLetterInDict(letter, this.gameBoard.alphabetDict);
         if (!letterObj.clicked) {
-            this.hangman.selectLetter(letter);
-            this.socket.emit('clicked', { roomID: this.roomID, game: this.hangman });
+            this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard);
+            this.socket.emit('clicked', { roomID: this.roomID, game: this.gameBoard });
         }
     };
     HangmanComponent.prototype.newGame = function () {
         this.hangman = new _hangman__WEBPACK_IMPORTED_MODULE_2__["Hangman"]();
-        this.socket.emit('clicked', { roomID: this.roomID, game: this.hangman });
+        this.gameBoard = this.hangman.gameBoard;
+        this.socket.emit('clicked', { roomID: this.roomID, game: this.gameBoard });
     };
     HangmanComponent.prototype.displayLinkToShare = function () {
         this.clickedOnPlayMulti = true;
@@ -308,12 +307,14 @@ __webpack_require__.r(__webpack_exports__);
 var Hangman = /** @class */ (function () {
     function Hangman() {
         this.alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        this.correctGuesses = [];
-        this.alphabetDict = [[], []];
-        this.winner = false;
-        this.loser = false;
-        this.secretWordLetters = [];
-        this.guessesRemaining = 5;
+        //this object of critical info will be sent back and forth over socket connections and used for HTML rendering
+        this.gameBoard = { guessesRemaining: 5,
+            wordToGuess: undefined,
+            correctGuesses: [],
+            alphabetDict: [[], []],
+            winner: false,
+            loser: false,
+            secretWordLetters: [] };
         this.readTextFile('./assets/words.txt');
     }
     Hangman.prototype.readTextFile = function (file) {
@@ -326,7 +327,7 @@ var Hangman = /** @class */ (function () {
                     var rawWords = rawFile.responseText;
                     _this.allWords = rawWords.split(' ');
                     var idx = Math.floor(Math.random() * (_this.allWords.length - 1));
-                    _this.wordToGuess = _this.allWords[idx];
+                    _this.gameBoard.wordToGuess = _this.allWords[idx];
                     _this.createAlphabetDict();
                     _this.createSecretWordArray();
                 }
@@ -335,10 +336,10 @@ var Hangman = /** @class */ (function () {
         rawFile.send(null);
     };
     Hangman.prototype.createSecretWordArray = function () {
-        for (var i = 0; i < this.wordToGuess.length; i++) {
-            var secretLetter = this.wordToGuess[i].toUpperCase();
-            this.secretWordLetters.push({ letter: secretLetter, placeholder: '_' });
-            var letterObj = this.findLetterInDict(secretLetter, this.alphabetDict);
+        for (var i = 0; i < this.gameBoard.wordToGuess.length; i++) {
+            var secretLetter = this.gameBoard.wordToGuess[i].toUpperCase();
+            this.gameBoard.secretWordLetters.push({ letter: secretLetter, placeholder: '_' });
+            var letterObj = this.findLetterInDict(secretLetter, this.gameBoard.alphabetDict);
             letterObj.isInSecretWord = true;
         }
     };
@@ -346,35 +347,36 @@ var Hangman = /** @class */ (function () {
         for (var i = 0; i < this.alphabet.length; i++) {
             var letterFromAlphabet = this.alphabet[i];
             if (i < 13) {
-                this.alphabetDict[0].push({ letter: letterFromAlphabet, isInSecretWord: false, clicked: false });
+                this.gameBoard.alphabetDict[0].push({ letter: letterFromAlphabet, isInSecretWord: false, clicked: false });
             }
             else {
-                this.alphabetDict[1].push({ letter: letterFromAlphabet, isInSecretWord: false, clicked: false });
+                this.gameBoard.alphabetDict[1].push({ letter: letterFromAlphabet, isInSecretWord: false, clicked: false });
             }
         }
     };
-    Hangman.prototype.selectLetter = function (input) {
+    Hangman.prototype.selectLetter = function (inputLetter, gameBoard) {
         var correctGuess = false;
-        var letterObj = this.findLetterInDict(input, this.alphabetDict);
+        var letterObj = this.findLetterInDict(inputLetter, gameBoard.alphabetDict);
         letterObj.clicked = true;
-        for (var i = 0; i < this.secretWordLetters.length; i++) {
-            var secretLetterObj = this.secretWordLetters[i];
-            if (secretLetterObj.letter == input) {
-                secretLetterObj.placeholder = input.toLowerCase();
-                this.correctGuesses.push(input);
-                if (this.correctGuesses.length == this.secretWordLetters.length) {
-                    this.winner = true;
+        for (var i = 0; i < gameBoard.secretWordLetters.length; i++) {
+            var secretLetterObj = gameBoard.secretWordLetters[i];
+            if (secretLetterObj.letter == inputLetter) {
+                secretLetterObj.placeholder = inputLetter.toLowerCase();
+                gameBoard.correctGuesses.push(inputLetter);
+                if (gameBoard.correctGuesses.length == gameBoard.secretWordLetters.length) {
+                    gameBoard.winner = true;
                     alert('You won!');
                 }
                 correctGuess = true;
             }
         }
         if (!correctGuess) {
-            this.guessesRemaining--;
+            gameBoard.guessesRemaining--;
         }
-        if (this.guessesRemaining == 0 && this.correctGuesses.length != this.secretWordLetters.length && !this.winner) {
-            alert('You lost. The correct answer was: ' + this.wordToGuess);
+        if (gameBoard.guessesRemaining == 0 && gameBoard.correctGuesses.length != gameBoard.secretWordLetters.length && !gameBoard.winner) {
+            alert('You lost. The correct answer was: ' + gameBoard.wordToGuess);
         }
+        return gameBoard;
     };
     Hangman.prototype.findLetterInDict = function (input, dict) {
         for (var i = 0; i < dict.length; i++) {
@@ -458,7 +460,7 @@ module.exports = __webpack_require__(/*! /Users/bbauer/Desktop/hangman/public/sr
 
 /***/ }),
 
-/***/ 3:
+/***/ 1:
 /*!********************!*\
   !*** ws (ignored) ***!
   \********************/
