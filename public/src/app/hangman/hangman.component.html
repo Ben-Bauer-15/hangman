@@ -32,5 +32,7 @@
     <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>
     <button (click) = 'sendMsg()'>Send</button>
   </div>
-  <h4 *ngFor = 'let msg of conversation'>{{msg}}</h4>
+  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>
 </div>
+
+<app-welcome *ngIf = 'welcomeVisible'></app-welcome>

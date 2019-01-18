@@ -4,7 +4,7 @@ var path = require('path')
 
 
 // DONT FORGET TO CHANGE THIS
-var IP = '10.0.0.253'
+var IP = '192.168.112.240'
 
 
 var bodyParser = require('body-parser')
@@ -24,7 +24,6 @@ app.get('/', function(req, res){
 })
 
 app.all('*', function(req, res){
-    console.log('port 5000 request')
     res.sendFile(path.resolve("public/dist/public/index.html"))
 })
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HangmanComponent } from "../hangman/hangman.component";
 
 @Component({
   selector: 'app-welcome',
@@ -6,10 +7,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent implements OnInit {
-
-  constructor() { }
+  name = ''
+  errors;
+  constructor(private _component : HangmanComponent) { }
 
   ngOnInit() {
+  }
+
+  dismiss(){
+    console.log(this.name)
+    if (this.name != ''){
+      this._component.name = this.name
+      this.errors = undefined
+      this._component.welcomeVisible = false
+
+    }
+    else{
+      this.errors = 'Name cannot be empty'
+    }
   }
 
 }

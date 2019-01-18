@@ -1,7 +1,5 @@
 var io;
 
-
-
 module.exports = function(server, IP){
     io = require('socket.io')(server)
 
@@ -28,7 +26,7 @@ module.exports = function(server, IP){
         })
 
         socket.on('newMsg', (data) =>{
-            socket.to(data.roomID).emit('newMsg', {msg : data.msg})
+            socket.to(data.roomID).emit('newMsg', {msg : data.msg, name : data.name})
         })
     })
 }

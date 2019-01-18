@@ -27,6 +27,7 @@ export class Hangman {
                     this.allWords = rawWords.split(' ')
                     var idx = Math.floor(Math.random() * (this.allWords.length - 1))
                     this.gameBoard.wordToGuess = this.allWords[idx]
+                    console.log(this.gameBoard.wordToGuess)
                     this.createAlphabetDict()
                     this.createSecretWordArray()
 
@@ -75,7 +76,8 @@ export class Hangman {
                 gameBoard.correctGuesses.push(inputLetter)
                 if (gameBoard.correctGuesses.length == gameBoard.secretWordLetters.length){
                     gameBoard.winner = true
-                    alert('You won!')
+                    
+                    return true
                 }
                 correctGuess = true
             }
@@ -85,7 +87,7 @@ export class Hangman {
             gameBoard.guessesRemaining --
         }
         if (gameBoard.guessesRemaining == 0 && gameBoard.correctGuesses.length != gameBoard.secretWordLetters.length && !gameBoard.winner){
-            alert('You lost. The correct answer was: ' + gameBoard.wordToGuess)
+            return false
         }
 
         return gameBoard

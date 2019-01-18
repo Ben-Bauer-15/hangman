@@ -185,7 +185,7 @@ module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    fo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg}}</h4>\n</div>"
+module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>\n</div>\n\n<app-welcome *ngIf = 'welcomeVisible'></app-welcome>"
 
 /***/ }),
 
@@ -220,6 +220,7 @@ var HangmanComponent = /** @class */ (function () {
         this.chatsActivated = false;
         this.newMsg = '';
         this.conversation = [];
+        this.welcomeVisible = true;
         this.setTitle();
     }
     HangmanComponent.prototype.ngOnInit = function () {
@@ -234,7 +235,15 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('joinRoom', { roomID: _this.roomID });
                 });
                 _this.socket.on('clicked', function (data) {
-                    _this.gameBoard = data.game;
+                    if (data.game == true) {
+                        alert('You won!');
+                    }
+                    else if (data.game == false) {
+                        alert('You lost. The correct answer was: ' + _this.gameBoard.wordToGuess);
+                    }
+                    else {
+                        _this.gameBoard = data.game;
+                    }
                 });
                 _this.socket.on('currentGameBoard', function (data) {
                     _this.gameBoard = data.game;
@@ -242,7 +251,7 @@ var HangmanComponent = /** @class */ (function () {
                     _this.conversation = data.messages;
                 });
                 _this.socket.on('newMsg', function (data) {
-                    _this.conversation.push(data.msg);
+                    _this.conversation.push({ name: data.name, msg: data.msg });
                 });
             }
             else {
@@ -257,10 +266,18 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('currentGameBoard', { game: _this.gameBoard, roomID: _this.roomID, messages: _this.conversation });
                 });
                 _this.socket.on('clicked', function (data) {
-                    _this.gameBoard = data.game;
+                    if (data.game == true) {
+                        alert('You won!');
+                    }
+                    else if (data.game == false) {
+                        alert('You lost. The correct answer was: ' + _this.gameBoard.wordToGuess);
+                    }
+                    else {
+                        _this.gameBoard = data.game;
+                    }
                 });
                 _this.socket.on('newMsg', function (data) {
-                    _this.conversation.push(data.msg);
+                    _this.conversation.push({ name: data.name, msg: data.msg });
                 });
             }
         });
@@ -269,11 +286,17 @@ var HangmanComponent = /** @class */ (function () {
         this._titleService.setTitle("Hangman");
     };
     HangmanComponent.prototype.selectLetter = function (letter) {
-        //there's a bug somewhere in here to fix. invited player isn't able to click a letter
-        //for some reason, only the properties, and not the methods, of the hangman object are being sent back and forth
         var letterObj = this.hangman.findLetterInDict(letter, this.gameBoard.alphabetDict);
-        if (!letterObj.clicked) {
+        if (!letterObj.clicked && !this.welcomeVisible) {
             this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard);
+            if (this.gameBoard == false) {
+                this.socket.emit('clicked', { roomID: this.roomID, game: this.gameBoard });
+                alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess);
+            }
+            else if (this.gameBoard == true) {
+                this.socket.emit('clicked', { roomID: this.roomID, game: this.gameBoard });
+                alert('You won!');
+            }
             this.socket.emit('clicked', { roomID: this.roomID, game: this.gameBoard });
         }
     };
@@ -295,8 +318,8 @@ var HangmanComponent = /** @class */ (function () {
         this.chatsActivated = false;
     };
     HangmanComponent.prototype.sendMsg = function () {
-        this.conversation.push(this.newMsg);
-        this.socket.emit('newMsg', { roomID: this.roomID, msg: this.newMsg });
+        this.conversation.push({ name: this.name, msg: ": " + this.newMsg });
+        this.socket.emit('newMsg', { roomID: this.roomID, msg: ": " + this.newMsg, name: this.name });
         this.newMsg = '';
     };
     HangmanComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -349,6 +372,7 @@ var Hangman = /** @class */ (function () {
                     _this.allWords = rawWords.split(' ');
                     var idx = Math.floor(Math.random() * (_this.allWords.length - 1));
                     _this.gameBoard.wordToGuess = _this.allWords[idx];
+                    console.log(_this.gameBoard.wordToGuess);
                     _this.createAlphabetDict();
                     _this.createSecretWordArray();
                 }
@@ -386,7 +410,7 @@ var Hangman = /** @class */ (function () {
                 gameBoard.correctGuesses.push(inputLetter);
                 if (gameBoard.correctGuesses.length == gameBoard.secretWordLetters.length) {
                     gameBoard.winner = true;
-                    alert('You won!');
+                    return true;
                 }
                 correctGuess = true;
             }
@@ -395,7 +419,7 @@ var Hangman = /** @class */ (function () {
             gameBoard.guessesRemaining--;
         }
         if (gameBoard.guessesRemaining == 0 && gameBoard.correctGuesses.length != gameBoard.secretWordLetters.length && !gameBoard.winner) {
-            alert('You lost. The correct answer was: ' + gameBoard.wordToGuess);
+            return false;
         }
         return gameBoard;
     };
@@ -422,7 +446,7 @@ var Hangman = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3dlbGNvbWUvd2VsY29tZS5jb21wb25lbnQuY3NzIn0= */"
+module.exports = "#welcomeMsg {\n    box-shadow: 0px 0px 600px 200px black;\n    margin-right: auto;\n    right: 0;\n    left: 0;\n    height: 320px;\n    width: 29%;\n    text-align: center;\n    padding: 7px;\n    border: 1px solid gray;\n    margin-left: auto;\n    position: absolute;\n    font-size: 1.2em;\n    box-sizing: border-box;\n    background-color: #292844;\n    border-radius: 5px;\n    top: 9%;\n}\n\n#welcomeMsg input{\n    height: 34px;\n    width: 65%;\n    font-size: 20px;\n    display: block;\n    margin-bottom: 37px;\n    margin-left: auto;\n    margin-right: auto;\n}\n\nbutton {\n    color: white;\n    width: 20%;\n    font-style: italic;\n    cursor: pointer;\n    font-size: 1.5rem;\n    font-family: inherit;\n    background-color: #337ab7;\n    border-color: #2e6da4;\n    border-radius: 5px;\n}\n\nbutton:hover{\n    background-color: #24639a;\n}\n\n.error {\n    color: red;\n}\n\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvd2VsY29tZS93ZWxjb21lLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxzQ0FBc0M7SUFDdEMsbUJBQW1CO0lBQ25CLFNBQVM7SUFDVCxRQUFRO0lBQ1IsY0FBYztJQUNkLFdBQVc7SUFDWCxtQkFBbUI7SUFDbkIsYUFBYTtJQUNiLHVCQUF1QjtJQUN2QixrQkFBa0I7SUFDbEIsbUJBQW1CO0lBQ25CLGlCQUFpQjtJQUNqQix1QkFBdUI7SUFDdkIsMEJBQTBCO0lBQzFCLG1CQUFtQjtJQUNuQixRQUFRO0NBQ1g7O0FBRUQ7SUFDSSxhQUFhO0lBQ2IsV0FBVztJQUNYLGdCQUFnQjtJQUNoQixlQUFlO0lBQ2Ysb0JBQW9CO0lBQ3BCLGtCQUFrQjtJQUNsQixtQkFBbUI7Q0FDdEI7O0FBRUQ7SUFDSSxhQUFhO0lBQ2IsV0FBVztJQUNYLG1CQUFtQjtJQUNuQixnQkFBZ0I7SUFDaEIsa0JBQWtCO0lBQ2xCLHFCQUFxQjtJQUNyQiwwQkFBMEI7SUFDMUIsc0JBQXNCO0lBQ3RCLG1CQUFtQjtDQUN0Qjs7QUFFRDtJQUNJLDBCQUEwQjtDQUM3Qjs7QUFFRDtJQUNJLFdBQVc7Q0FDZCIsImZpbGUiOiJzcmMvYXBwL3dlbGNvbWUvd2VsY29tZS5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI3dlbGNvbWVNc2cge1xuICAgIGJveC1zaGFkb3c6IDBweCAwcHggNjAwcHggMjAwcHggYmxhY2s7XG4gICAgbWFyZ2luLXJpZ2h0OiBhdXRvO1xuICAgIHJpZ2h0OiAwO1xuICAgIGxlZnQ6IDA7XG4gICAgaGVpZ2h0OiAzMjBweDtcbiAgICB3aWR0aDogMjklO1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbiAgICBwYWRkaW5nOiA3cHg7XG4gICAgYm9yZGVyOiAxcHggc29saWQgZ3JheTtcbiAgICBtYXJnaW4tbGVmdDogYXV0bztcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XG4gICAgZm9udC1zaXplOiAxLjJlbTtcbiAgICBib3gtc2l6aW5nOiBib3JkZXItYm94O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICMyOTI4NDQ7XG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICAgIHRvcDogOSU7XG59XG5cbiN3ZWxjb21lTXNnIGlucHV0e1xuICAgIGhlaWdodDogMzRweDtcbiAgICB3aWR0aDogNjUlO1xuICAgIGZvbnQtc2l6ZTogMjBweDtcbiAgICBkaXNwbGF5OiBibG9jaztcbiAgICBtYXJnaW4tYm90dG9tOiAzN3B4O1xuICAgIG1hcmdpbi1sZWZ0OiBhdXRvO1xuICAgIG1hcmdpbi1yaWdodDogYXV0bztcbn1cblxuYnV0dG9uIHtcbiAgICBjb2xvcjogd2hpdGU7XG4gICAgd2lkdGg6IDIwJTtcbiAgICBmb250LXN0eWxlOiBpdGFsaWM7XG4gICAgY3Vyc29yOiBwb2ludGVyO1xuICAgIGZvbnQtc2l6ZTogMS41cmVtO1xuICAgIGZvbnQtZmFtaWx5OiBpbmhlcml0O1xuICAgIGJhY2tncm91bmQtY29sb3I6ICMzMzdhYjc7XG4gICAgYm9yZGVyLWNvbG9yOiAjMmU2ZGE0O1xuICAgIGJvcmRlci1yYWRpdXM6IDVweDtcbn1cblxuYnV0dG9uOmhvdmVye1xuICAgIGJhY2tncm91bmQtY29sb3I6ICMyNDYzOWE7XG59XG5cbi5lcnJvciB7XG4gICAgY29sb3I6IHJlZDtcbn1cbiJdfQ== */"
 
 /***/ }),
 
@@ -433,7 +457,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  welcome works!\n</p>\n"
+module.exports = "<div id = 'welcomeMsg'>\n  <h4>Welcome to Hangman! Please enter your name:</h4>\n  <input type = 'text' name = 'name' [(ngModel)] = 'name'>\n  <p class = 'error' *ngIf = 'errors'>{{errors}}</p>\n  <button (click) = 'dismiss()'>Enter</button>\n</div>"
 
 /***/ }),
 
@@ -449,12 +473,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WelcomeComponent", function() { return WelcomeComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hangman/hangman.component */ "./src/app/hangman/hangman.component.ts");
+
 
 
 var WelcomeComponent = /** @class */ (function () {
-    function WelcomeComponent() {
+    function WelcomeComponent(_component) {
+        this._component = _component;
+        this.name = '';
     }
     WelcomeComponent.prototype.ngOnInit = function () {
+    };
+    WelcomeComponent.prototype.dismiss = function () {
+        console.log(this.name);
+        if (this.name != '') {
+            this._component.name = this.name;
+            this.errors = undefined;
+            this._component.welcomeVisible = false;
+        }
+        else {
+            this.errors = 'Name cannot be empty';
+        }
     };
     WelcomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
@@ -462,7 +501,7 @@ var WelcomeComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./welcome.component.html */ "./src/app/welcome/welcome.component.html"),
             styles: [__webpack_require__(/*! ./welcome.component.css */ "./src/app/welcome/welcome.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_hangman_hangman_component__WEBPACK_IMPORTED_MODULE_2__["HangmanComponent"]])
     ], WelcomeComponent);
     return WelcomeComponent;
 }());

@@ -13,6 +13,7 @@ import { ActivatedRoute, Params } from '@angular/router'
 export class HangmanComponent implements OnInit {
   hangman : Hangman
   socket;
+  name;
   roomID;
   linkToShare;
   gameBoard;
@@ -21,6 +22,7 @@ export class HangmanComponent implements OnInit {
   chatsActivated = false
   newMsg = ''
   conversation = []
+  welcomeVisible = true
 
    constructor(private _titleService : Title,
     private _route : ActivatedRoute) { 
@@ -40,11 +42,20 @@ export class HangmanComponent implements OnInit {
         this.roomID = params['id']
         this.socket = io()
         this.socket.on('welcome', (data) => {
-          this.socket.emit('joinRoom', {roomID : this.roomID})
+          this.socket.emit('joinRoom', {roomID : this.roomID})  
         })
 
         this.socket.on('clicked', (data) => {
-          this.gameBoard = data.game
+          if (data.game == true){
+            alert('You won!')
+          }
+
+          else if(data.game == false){
+            alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
+           }
+           else {
+             this.gameBoard = data.game
+           }
         })
 
         this.socket.on('currentGameBoard', (data) => {
@@ -54,7 +65,7 @@ export class HangmanComponent implements OnInit {
         })
 
         this.socket.on('newMsg', (data) => {
-          this.conversation.push(data.msg)
+          this.conversation.push({name : data.name, msg : data.msg})
         })
       }
 
@@ -73,11 +84,21 @@ export class HangmanComponent implements OnInit {
        })
 
        this.socket.on('clicked', (data) => {
-         this.gameBoard = data.game
+         if (data.game == true){
+           alert('You won!')
+         }
+
+         else if(data.game == false){
+          alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
+         }
+         
+         else {
+           this.gameBoard = data.game
+         }
         })
 
         this.socket.on('newMsg', (data) => {
-          this.conversation.push(data.msg)
+          this.conversation.push({name : data.name, msg : data.msg})
         })
       }
     })
@@ -88,12 +109,18 @@ export class HangmanComponent implements OnInit {
   }
 
   selectLetter(letter){
-
-    //there's a bug somewhere in here to fix. invited player isn't able to click a letter
-    //for some reason, only the properties, and not the methods, of the hangman object are being sent back and forth
     var letterObj = this.hangman.findLetterInDict(letter, this.gameBoard.alphabetDict)
-    if (!letterObj.clicked){
+    if (!letterObj.clicked && !this.welcomeVisible){
       this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard)
+      if (this.gameBoard == false){
+        this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
+        alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
+      }
+      
+      else if (this.gameBoard == true){
+        this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
+        alert('You won!')
+      }
       this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
     }
   }
@@ -121,10 +148,8 @@ export class HangmanComponent implements OnInit {
   }
 
   sendMsg(){
-    this.conversation.push(this.newMsg)
-    this.socket.emit('newMsg', {roomID : this.roomID, msg : this.newMsg})
+    this.conversation.push({name : this.name, msg : ": " + this.newMsg})
+    this.socket.emit('newMsg', {roomID : this.roomID, msg : ": " + this.newMsg, name : this.name})
     this.newMsg = ''
-
   }
-
 }
