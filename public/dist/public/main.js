@@ -553,6 +553,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../http.service */ "./src/app/http.service.ts");
+/* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+
 
 
 
@@ -561,11 +563,17 @@ var StatsComponent = /** @class */ (function () {
         this._http = _http;
     }
     StatsComponent.prototype.ngOnInit = function () {
+        this.start();
     };
     StatsComponent.prototype.getAllGames = function () {
         var obs = this._http.allGames();
         obs.subscribe(function (data) {
         });
+    };
+    StatsComponent.prototype.start = function () {
+        d3__WEBPACK_IMPORTED_MODULE_3__["select"]('body')
+            .append('p')
+            .text('Hello world!');
     };
     StatsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
