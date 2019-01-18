@@ -258,10 +258,10 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('joinRoom', { roomID: _this.roomID });
                 });
                 _this.socket.on('clicked', function (data) {
-                    if (data.game == true) {
+                    if (data.game.winner == true) {
                         alert('You won!');
                     }
-                    else if (data.game == false) {
+                    else if (data.game.loser == true) {
                         alert('You lost. The correct answer was: ' + _this.gameBoard.wordToGuess);
                     }
                     else {
@@ -289,10 +289,10 @@ var HangmanComponent = /** @class */ (function () {
                     _this.socket.emit('currentGameBoard', { game: _this.gameBoard, roomID: _this.roomID, messages: _this.conversation });
                 });
                 _this.socket.on('clicked', function (data) {
-                    if (data.game == true) {
+                    if (data.game.winner == true) {
                         alert('You won!');
                     }
-                    else if (data.game == false) {
+                    else if (data.game.loser == true) {
                         alert('You lost. The correct answer was: ' + _this.gameBoard.wordToGuess);
                     }
                     else {

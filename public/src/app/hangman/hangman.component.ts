@@ -58,12 +58,12 @@ export class HangmanComponent implements OnInit {
         })
 
         this.socket.on('clicked', (data) => {
-          if (data.game == true){
+          if (data.game.winner == true){
             
             alert('You won!')
           }
 
-          else if(data.game == false){
+          else if(data.game.loser == true){
             
             alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
            }
@@ -98,11 +98,11 @@ export class HangmanComponent implements OnInit {
        })
 
        this.socket.on('clicked', (data) => {
-         if (data.game == true){
+         if (data.game.winner == true){
            alert('You won!')
          }
 
-         else if(data.game == false){
+         else if(data.game.loser == true){
           alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
          }
 
