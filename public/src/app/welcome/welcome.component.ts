@@ -18,6 +18,7 @@ export class WelcomeComponent implements OnInit {
     console.log(this.name)
     if (this.name != ''){
       this._component.name = this.name
+      this._component._component.name = this.name
       this.errors = undefined
       this._component.welcomeVisible = false
 

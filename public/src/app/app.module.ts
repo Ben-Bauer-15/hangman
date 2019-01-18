@@ -6,19 +6,24 @@ import { AppComponent } from './app.component';
 import { HangmanComponent } from './hangman/hangman.component';
 import { FormsModule } from "@angular/forms";
 import { WelcomeComponent } from './welcome/welcome.component';
+import { StatsComponent } from './stats/stats.component';
+import { HttpService } from "./http.service";
+import { HttpClientModule } from "@angular/common/http";
 
 @NgModule({
   declarations: [
     AppComponent,
     HangmanComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    StatsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

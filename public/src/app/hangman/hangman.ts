@@ -77,7 +77,6 @@ export class Hangman {
                 if (gameBoard.correctGuesses.length == gameBoard.secretWordLetters.length){
                     gameBoard.winner = true
                     
-                    return true
                 }
                 correctGuess = true
             }
@@ -87,7 +86,7 @@ export class Hangman {
             gameBoard.guessesRemaining --
         }
         if (gameBoard.guessesRemaining == 0 && gameBoard.correctGuesses.length != gameBoard.secretWordLetters.length && !gameBoard.winner){
-            return false
+            gameBoard.loser = true
         }
 
         return gameBoard

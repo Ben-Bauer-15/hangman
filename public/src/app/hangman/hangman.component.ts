@@ -3,6 +3,8 @@ import { Hangman } from "./hangman";
 import { Title } from '@angular/platform-browser';
 import * as io from 'socket.io-client'
 import { ActivatedRoute, Params } from '@angular/router'
+import { AppComponent } from "../app.component";
+import { HttpService } from "../http.service";
 
 
  @Component({
@@ -22,13 +24,23 @@ export class HangmanComponent implements OnInit {
   chatsActivated = false
   newMsg = ''
   conversation = []
-  welcomeVisible = true
+  welcomeVisible;
 
    constructor(private _titleService : Title,
-    private _route : ActivatedRoute) { 
+    private _route : ActivatedRoute,
+    public _component : AppComponent,
+    private _http : HttpService) { 
     
 
     this.setTitle()
+
+    if (this._component.name){
+      this.welcomeVisible = false
+      this.name = this._component.name
+    }
+    else{
+      this.welcomeVisible = true
+    }
    }
 
    ngOnInit() {
@@ -47,10 +59,12 @@ export class HangmanComponent implements OnInit {
 
         this.socket.on('clicked', (data) => {
           if (data.game == true){
+            
             alert('You won!')
           }
 
           else if(data.game == false){
+            
             alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
            }
            else {
@@ -91,7 +105,7 @@ export class HangmanComponent implements OnInit {
          else if(data.game == false){
           alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
          }
-         
+
          else {
            this.gameBoard = data.game
          }
@@ -112,12 +126,31 @@ export class HangmanComponent implements OnInit {
     var letterObj = this.hangman.findLetterInDict(letter, this.gameBoard.alphabetDict)
     if (!letterObj.clicked && !this.welcomeVisible){
       this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard)
-      if (this.gameBoard == false){
+
+      if (this.gameBoard.loser == true){
+
+        let obs = this._http.newGame({
+          length : this.gameBoard.wordToGuess.length, 
+          word : this.gameBoard.wordToGuess, 
+          completed : false})
+        obs.subscribe((data) => {
+          console.log(data)
+        })
+
         this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
         alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess)
       }
       
-      else if (this.gameBoard == true){
+      else if (this.gameBoard.winner == true){
+
+        let obs = this._http.newGame({
+          length : this.gameBoard.wordToGuess.length, 
+          word : this.gameBoard.wordToGuess, 
+          completed : true})
+        obs.subscribe((data) => {
+          console.log(data)
+        })
+
         this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
         alert('You won!')
       }
