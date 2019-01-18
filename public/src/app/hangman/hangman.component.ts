@@ -19,6 +19,8 @@ export class HangmanComponent implements OnInit {
   address;
   clickedOnPlayMulti = false
   chatsActivated = false
+  newMsg = ''
+  conversation = []
 
    constructor(private _titleService : Title,
     private _route : ActivatedRoute) { 
@@ -43,11 +45,16 @@ export class HangmanComponent implements OnInit {
 
         this.socket.on('clicked', (data) => {
           this.gameBoard = data.game
-
         })
 
         this.socket.on('currentGameBoard', (data) => {
           this.gameBoard = data.game
+          console.log(data)
+          this.conversation = data.messages
+        })
+
+        this.socket.on('newMsg', (data) => {
+          this.conversation.push(data.msg)
         })
       }
 
@@ -62,11 +69,15 @@ export class HangmanComponent implements OnInit {
          this.socket.emit('firstUser', {roomID : this.roomID})
        })
        this.socket.on('otherUser', (data) => {
-         this.socket.emit('currentGameBoard', {game : this.gameBoard, roomID : this.roomID})
+         this.socket.emit('currentGameBoard', {game : this.gameBoard, roomID : this.roomID, messages : this.conversation})
        })
 
        this.socket.on('clicked', (data) => {
          this.gameBoard = data.game
+        })
+
+        this.socket.on('newMsg', (data) => {
+          this.conversation.push(data.msg)
         })
       }
     })
@@ -108,4 +119,12 @@ export class HangmanComponent implements OnInit {
   hideActiveChats(){
     this.chatsActivated = false
   }
+
+  sendMsg(){
+    this.conversation.push(this.newMsg)
+    this.socket.emit('newMsg', {roomID : this.roomID, msg : this.newMsg})
+    this.newMsg = ''
+
+  }
+
 }

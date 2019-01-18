@@ -29,8 +29,8 @@
 <div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
 <div *ngIf = 'chatsActivated' id = 'activeChats'>
   <div class = 'newChat'>
-    <input type = 'text' placeholder = 'New Message'>
-    <button>Send</button>
+    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>
+    <button (click) = 'sendMsg()'>Send</button>
   </div>
-  <h4>You: hey! What letter should I guess next?</h4>
+  <h4 *ngFor = 'let msg of conversation'>{{msg}}</h4>
 </div>

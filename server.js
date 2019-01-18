@@ -4,7 +4,7 @@ var path = require('path')
 
 
 // DONT FORGET TO CHANGE THIS
-var IP = '192.168.0.11'
+var IP = '10.0.0.253'
 
 
 var bodyParser = require('body-parser')

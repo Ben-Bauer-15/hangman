@@ -24,7 +24,11 @@ module.exports = function(server, IP){
         })
 
         socket.on('currentGameBoard', (data) => {
-            socket.to(data.roomID).emit('currentGameBoard', {game : data.game})
+            socket.to(data.roomID).emit('currentGameBoard', {game : data.game, messages : data.messages})
+        })
+
+        socket.on('newMsg', (data) =>{
+            socket.to(data.roomID).emit('newMsg', {msg : data.msg})
         })
     })
 }
