@@ -282,7 +282,7 @@ var HangmanComponent = /** @class */ (function () {
                 _this.socket.on('welcome', function (data) {
                     _this.roomID = data.roomID;
                     _this.address = data.address;
-                    _this.linkToShare = "http://" + _this.address + ":5000/room/" + _this.roomID;
+                    _this.linkToShare = "http://" + _this.address + "/room/" + _this.roomID;
                     _this.socket.emit('firstUser', { roomID: _this.roomID });
                 });
                 _this.socket.on('otherUser', function (data) {
