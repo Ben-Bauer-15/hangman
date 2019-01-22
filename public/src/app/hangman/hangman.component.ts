@@ -90,7 +90,7 @@ export class HangmanComponent implements OnInit {
         this.socket.on('welcome', (data) => {
          this.roomID = data.roomID
          this.address = data.address
-         this.linkToShare = "http://" + this.address + "/room/" + this.roomID
+         this.linkToShare = "http://hangman.ben-bauer.net/room/" + this.roomID
          this.socket.emit('firstUser', {roomID : this.roomID})
        })
        this.socket.on('otherUser', (data) => {
