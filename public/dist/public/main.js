@@ -45,8 +45,10 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [
     { path: '', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
-    { path: 'room/:id', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
-    { path: 'data', component: _stats_stats_component__WEBPACK_IMPORTED_MODULE_4__["StatsComponent"] }
+    { path: 'room/:id/', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
+    // { path : 'room/:id/', component : HangmanComponent},
+    { path: 'data', component: _stats_stats_component__WEBPACK_IMPORTED_MODULE_4__["StatsComponent"] },
+    { path: 'hangman/:name', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -252,6 +254,12 @@ var HangmanComponent = /** @class */ (function () {
         this.gameBoard = this.hangman.gameBoard;
         this._route.params.subscribe(function (params) {
             if (params['id']) {
+                console.log(params);
+                // if (params['name']){
+                //   this._component.name = params['name']
+                //   this.name = params['name']
+                //   this.welcomeVisible = false
+                // }
                 _this.roomID = params['id'];
                 _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
                 _this.socket.on('welcome', function (data) {
@@ -278,11 +286,16 @@ var HangmanComponent = /** @class */ (function () {
                 });
             }
             else {
+                if (params['name']) {
+                    _this._component.name = params['name'];
+                    _this.name = params['name'];
+                    _this.welcomeVisible = false;
+                }
                 _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
                 _this.socket.on('welcome', function (data) {
                     _this.roomID = data.roomID;
                     _this.address = data.address;
-                    _this.linkToShare = "http://" + _this.address + ":5000/room/" + _this.roomID;
+                    _this.linkToShare = "http://hangman.ben-bauer.net/room/" + _this.roomID;
                     _this.socket.emit('firstUser', { roomID: _this.roomID });
                 });
                 _this.socket.on('otherUser', function (data) {

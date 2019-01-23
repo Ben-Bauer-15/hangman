@@ -51,6 +51,14 @@ export class HangmanComponent implements OnInit {
 
     this._route.params.subscribe((params : Params) => {
       if (params['id']){
+        console.log(params)
+
+        // if (params['name']){
+        //   this._component.name = params['name']
+        //   this.name = params['name']
+        //   this.welcomeVisible = false
+        // }
+
         this.roomID = params['id']
         this.socket = io()
         this.socket.on('welcome', (data) => {
@@ -84,13 +92,17 @@ export class HangmanComponent implements OnInit {
       }
 
       else {
-
+        if (params['name']){
+          this._component.name = params['name']
+          this.name = params['name']
+          this.welcomeVisible = false
+        }
 
         this.socket = io()
         this.socket.on('welcome', (data) => {
          this.roomID = data.roomID
          this.address = data.address
-         this.linkToShare = "http://" + this.address + ":5000/room/" + this.roomID
+         this.linkToShare = "http://hangman.ben-bauer.net/room/" + this.roomID
          this.socket.emit('firstUser', {roomID : this.roomID})
        })
        this.socket.on('otherUser', (data) => {
