@@ -5,7 +5,6 @@ module.exports = function(server, IP){
 
 
     io.on('connection', (socket) => {
-        console.log(socket.id)
         var id = makeid()
         socket.emit('welcome', {roomID : id, address : IP})
 

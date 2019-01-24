@@ -5,8 +5,8 @@ import { StatsComponent } from './stats/stats.component';
 
 const routes: Routes = [
   {path : '', component : HangmanComponent},
-  { path : 'room/:id/', component : HangmanComponent},
-  // { path : 'room/:id/', component : HangmanComponent},
+  { path : 'room/:id', component : HangmanComponent},
+  { path : 'room/:id/:name', component : HangmanComponent},
   { path : 'data', component : StatsComponent},
   { path : 'hangman/:name', component : HangmanComponent}
 

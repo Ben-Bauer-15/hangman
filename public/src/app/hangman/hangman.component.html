@@ -35,6 +35,6 @@
   <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>
 </div>
 
-<button class = 'dataBtn' [routerLink] = "['data']">Cool Data!</button>
+<button class = 'dataBtn' [routerLink] = "['/data']">Cool Data!</button>
 
 <app-welcome *ngIf = 'welcomeVisible'></app-welcome>

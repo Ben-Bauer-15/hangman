@@ -3,7 +3,7 @@ var app = express()
 
     
 // DONT FORGET TO CHANGE THIS
-var IP = '18.220.129.124'
+var IP = '10.0.0.253'
 
 
 var bodyParser = require('body-parser')

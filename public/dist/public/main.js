@@ -45,8 +45,8 @@ __webpack_require__.r(__webpack_exports__);
 
 var routes = [
     { path: '', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
-    { path: 'room/:id/', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
-    // { path : 'room/:id/', component : HangmanComponent},
+    { path: 'room/:id', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
+    { path: 'room/:id/:name', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] },
     { path: 'data', component: _stats_stats_component__WEBPACK_IMPORTED_MODULE_4__["StatsComponent"] },
     { path: 'hangman/:name', component: _hangman_hangman_component__WEBPACK_IMPORTED_MODULE_3__["HangmanComponent"] }
 ];
@@ -198,7 +198,7 @@ module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    fo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>\n</div>\n\n<button class = 'dataBtn' [routerLink] = \"['data']\">Cool Data!</button>\n\n<app-welcome *ngIf = 'welcomeVisible'></app-welcome>"
+module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>\n</div>\n\n<button class = 'dataBtn' [routerLink] = \"['/data']\">Cool Data!</button>\n\n<app-welcome *ngIf = 'welcomeVisible'></app-welcome>"
 
 /***/ }),
 
@@ -255,11 +255,11 @@ var HangmanComponent = /** @class */ (function () {
         this._route.params.subscribe(function (params) {
             if (params['id']) {
                 console.log(params);
-                // if (params['name']){
-                //   this._component.name = params['name']
-                //   this.name = params['name']
-                //   this.welcomeVisible = false
-                // }
+                if (params['name']) {
+                    _this._component.name = params['name'];
+                    _this.name = _this._component.name;
+                    _this.welcomeVisible = false;
+                }
                 _this.roomID = params['id'];
                 _this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
                 _this.socket.on('welcome', function (data) {
@@ -295,7 +295,7 @@ var HangmanComponent = /** @class */ (function () {
                 _this.socket.on('welcome', function (data) {
                     _this.roomID = data.roomID;
                     _this.address = data.address;
-                    _this.linkToShare = "http://hangman.ben-bauer.net/room/" + _this.roomID;
+                    _this.linkToShare = "http://" + _this.address + ":5000/room/" + _this.roomID + "/guest";
                     _this.socket.emit('firstUser', { roomID: _this.roomID });
                 });
                 _this.socket.on('otherUser', function (data) {
@@ -574,19 +574,75 @@ __webpack_require__.r(__webpack_exports__);
 var StatsComponent = /** @class */ (function () {
     function StatsComponent(_http) {
         this._http = _http;
+        this.wordLengths = [];
     }
     StatsComponent.prototype.ngOnInit = function () {
-        this.start();
+        this.getAllGames();
     };
     StatsComponent.prototype.getAllGames = function () {
+        var _this = this;
         var obs = this._http.allGames();
         obs.subscribe(function (data) {
+            _this.allGames = data.rawData;
+            _this.completionRates = data.completionRates;
+            for (var i = 0; i < _this.completionRates.length; i++) {
+                var item = _this.completionRates[i];
+                var length = item.length;
+                _this.wordLengths.push(length);
+            }
+            console.log('possible lengths are ', _this.wordLengths);
+            console.log(_this.completionRates);
+            _this.renderSVG();
         });
     };
-    StatsComponent.prototype.start = function () {
-        d3__WEBPACK_IMPORTED_MODULE_3__["select"]('body')
-            .append('p')
-            .text('Hello world!');
+    StatsComponent.prototype.renderSVG = function () {
+        var margin = {
+            top: 30,
+            right: 30,
+            bottom: 40,
+            left: 50
+        };
+        var height = 500 - margin.top - margin.bottom;
+        var width = 500 - margin.right - margin.left;
+        var padding = 5;
+        var barWidth = ((1 / this.completionRates.length) * width) - padding;
+        var vScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
+            .domain([0, 100])
+            .range([0, height]);
+        var hScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
+            .domain([0, this.completionRates.length])
+            .range([0, width]);
+        var hAxisScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
+            .domain([this.wordLengths[0], this.wordLengths[this.wordLengths.length - 1]])
+            .range([0, width - (padding * this.wordLengths.length) - (barWidth / 2) + (padding * 2)]);
+        var vAxisScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
+            .domain([100, 0])
+            .range([0, height]);
+        var canvas = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('app-stats').append('svg')
+            .attr('width', width + margin.right + margin.left)
+            .attr('height', height + margin.top + margin.bottom)
+            .attr('style', 'background-color:black');
+        var chart = canvas.selectAll('rect')
+            .data(this.completionRates)
+            .enter()
+            .append('rect')
+            .attr('height', function (d) { return vScale(d.completionRate); })
+            .attr('width', function () { return barWidth; })
+            .attr('fill', 'green')
+            .attr('y', function (d) { return height - vScale(d.completionRate) + margin.top; })
+            .attr('x', function (d, i) { return hScale(i) + padding + margin.left; });
+        var xAxis = d3__WEBPACK_IMPORTED_MODULE_3__["axisBottom"]()
+            .scale(hAxisScale)
+            .ticks(this.wordLengths.length);
+        var yAxis = d3__WEBPACK_IMPORTED_MODULE_3__["axisLeft"]()
+            .scale(vAxisScale)
+            .ticks(10);
+        var hGuide = canvas.append('g')
+            .call(xAxis)
+            .attr('transform', "translate(" + ((barWidth / 2) + padding + margin.left) + ", " + (height + margin.top + 2) + ")");
+        var vGuide = canvas.append('g')
+            .call(yAxis)
+            .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
     };
     StatsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
