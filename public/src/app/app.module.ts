@@ -9,6 +9,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { StatsComponent } from './stats/stats.component';
 import { HttpService } from "./http.service";
 import { HttpClientModule } from "@angular/common/http";
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { HttpClientModule } from "@angular/common/http";
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    Ng5SliderModule
   ],
   providers: [HttpService],
   bootstrap: [AppComponent]

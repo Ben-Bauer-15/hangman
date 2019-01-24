@@ -141,6 +141,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _stats_stats_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./stats/stats.component */ "./src/app/stats/stats.component.ts");
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./http.service */ "./src/app/http.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var ng5_slider__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ng5-slider */ "./node_modules/ng5-slider/esm5/ng5-slider.js");
+
 
 
 
@@ -167,7 +169,8 @@ var AppModule = /** @class */ (function () {
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_6__["FormsModule"],
-                _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"]
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_10__["HttpClientModule"],
+                ng5_slider__WEBPACK_IMPORTED_MODULE_11__["Ng5SliderModule"]
             ],
             providers: [_http_service__WEBPACK_IMPORTED_MODULE_9__["HttpService"]],
             bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
@@ -549,7 +552,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ""
+module.exports = "<ng5-slider [(value)]=\"value\" [options]=\"options\"></ng5-slider>"
 
 /***/ }),
 
@@ -575,6 +578,11 @@ var StatsComponent = /** @class */ (function () {
     function StatsComponent(_http) {
         this._http = _http;
         this.wordLengths = [];
+        this.value = 5;
+        this.options = {
+            floor: 3,
+            ceil: 10
+        };
     }
     StatsComponent.prototype.ngOnInit = function () {
         this.getAllGames();
@@ -590,12 +598,12 @@ var StatsComponent = /** @class */ (function () {
                 var length = item.length;
                 _this.wordLengths.push(length);
             }
-            console.log('possible lengths are ', _this.wordLengths);
-            console.log(_this.completionRates);
             _this.renderSVG();
         });
     };
     StatsComponent.prototype.renderSVG = function () {
+        var animationDuration = 700;
+        var animationDelay = 30;
         var margin = {
             top: 30,
             right: 30,
@@ -619,18 +627,69 @@ var StatsComponent = /** @class */ (function () {
             .domain([100, 0])
             .range([0, height]);
         var canvas = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('app-stats').append('svg')
+            .attr('transform', 'translate(40, 40)')
             .attr('width', width + margin.right + margin.left)
-            .attr('height', height + margin.top + margin.bottom)
-            .attr('style', 'background-color:black');
-        var chart = canvas.selectAll('rect')
+            .attr('height', height + margin.top + margin.bottom);
+        var xLabel = canvas.append('text')
+            .text('Word Length')
+            .attr('fill', 'white')
+            .attr('x', width / 2)
+            .attr('y', height + margin.bottom + margin.top - 5);
+        var yLabel = canvas.append('text')
+            .text('Completion Rate (%)')
+            .attr('fill', 'white')
+            .attr('x', -1 * ((height / 2) - margin.bottom))
+            .attr('y', margin.right - 12)
+            .attr('transform', 'rotate(-90)')
+            .attr('text-anchor', 'end');
+        var hoverLabel = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('app-stats').append('div')
+            .style('position', 'absolute')
+            .style('border-radius', '5px')
+            .style('background', 'gray')
+            .style('padding', '10px')
+            .style('border', '1px solid black')
+            .style('opacity', '0')
+            .html('hello world');
+        var barChart = canvas.selectAll('rect')
             .data(this.completionRates)
             .enter()
             .append('rect')
-            .attr('height', function (d) { return vScale(d.completionRate); })
+            // .attr('height', function(d) { return vScale(d.completionRate) })
+            .attr('height', '0')
             .attr('width', function () { return barWidth; })
             .attr('fill', 'green')
-            .attr('y', function (d) { return height - vScale(d.completionRate) + margin.top; })
-            .attr('x', function (d, i) { return hScale(i) + padding + margin.left; });
+            // .attr('y', function(d) { return height - vScale(d.completionRate) + margin.top })
+            .attr('y', height + margin.top)
+            .attr('x', function (d, i) { return hScale(i) + padding + margin.left; })
+            .on('mouseover', function (d) {
+            d3__WEBPACK_IMPORTED_MODULE_3__["selectAll"]('*').interrupt();
+            d3__WEBPACK_IMPORTED_MODULE_3__["select"](this).transition()
+                .attr('fill', 'lightgreen');
+            hoverLabel.transition()
+                .style('opacity', '1');
+            hoverLabel.html(d.completionRate + " %")
+                .style('left', (d3__WEBPACK_IMPORTED_MODULE_3__["event"].pageX) + 'px')
+                .style('top', (d3__WEBPACK_IMPORTED_MODULE_3__["event"].pageY) + 'px');
+        })
+            .on('mouseleave', function () {
+            d3__WEBPACK_IMPORTED_MODULE_3__["selectAll"]('*').interrupt();
+            d3__WEBPACK_IMPORTED_MODULE_3__["select"](this)
+                .attr('fill', 'green');
+            hoverLabel.transition()
+                .style('opacity', '0');
+        });
+        barChart.transition()
+            .attr('height', function (d) {
+            return vScale(d.completionRate);
+        })
+            .attr('y', function (d) {
+            return height - vScale(d.completionRate) + margin.top;
+        })
+            .duration(animationDuration)
+            .delay(function (d, i) {
+            return i * animationDelay;
+        })
+            .ease(d3__WEBPACK_IMPORTED_MODULE_3__["easeElastic"]);
         var xAxis = d3__WEBPACK_IMPORTED_MODULE_3__["axisBottom"]()
             .scale(hAxisScale)
             .ticks(this.wordLengths.length);
