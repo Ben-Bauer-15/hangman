@@ -1,1 +1,12 @@
-<ng5-slider [(value)]="value" [options]="options"></ng5-slider>
+<div class = 'body'>
+    
+    <div class = 'barChartContainer'>
+        <p>Game Winning Rates (%) vs Word Length</p>
+        
+    </div>
+    <div class = 'pieChartContainer'>
+        <p>% of Total Games Played of a Given Word Length</p>
+        <p *ngIf = 'allGames'>Number of Games Played: {{allGames.length}}</p>
+        
+    </div>
+</div>

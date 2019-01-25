@@ -1,4 +1,8 @@
 var io;
+var dataPageRoom = makeid()
+
+var controller = require('./server/controllers/games')
+
 
 module.exports = function(server, IP){
     io = require('socket.io')(server)
@@ -27,6 +31,16 @@ module.exports = function(server, IP){
 
         socket.on('newMsg', (data) =>{
             socket.to(data.roomID).emit('newMsg', {msg : data.msg, name : data.name})
+        })
+
+        socket.on('dataPage', () => {
+            socket.join(dataPageRoom)
+            socket.emit('hello', {msg : 'welcome to data!'})
+        })
+
+        socket.on('updateData', () => {
+            console.log('someone finished a game')
+            socket.to(dataPageRoom).emit('updatedData', {msg : 'Success'})
         })
     })
 }

@@ -140,6 +140,8 @@ export class HangmanComponent implements OnInit {
 
       if (this.gameBoard.loser == true){
 
+        this.socket.emit('updateData')
+
         let obs = this._http.newGame({
           length : this.gameBoard.wordToGuess.length, 
           word : this.gameBoard.wordToGuess, 
@@ -153,6 +155,9 @@ export class HangmanComponent implements OnInit {
       }
       
       else if (this.gameBoard.winner == true){
+
+        this.socket.emit('updateData')
+
 
         let obs = this._http.newGame({
           length : this.gameBoard.wordToGuess.length, 

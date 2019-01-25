@@ -329,6 +329,7 @@ var HangmanComponent = /** @class */ (function () {
         if (!letterObj.clicked && !this.welcomeVisible) {
             this.gameBoard = this.hangman.selectLetter(letter, this.gameBoard);
             if (this.gameBoard.loser == true) {
+                this.socket.emit('updateData');
                 var obs = this._http.newGame({
                     length: this.gameBoard.wordToGuess.length,
                     word: this.gameBoard.wordToGuess,
@@ -341,6 +342,7 @@ var HangmanComponent = /** @class */ (function () {
                 alert('You lost. The correct answer was: ' + this.gameBoard.wordToGuess);
             }
             else if (this.gameBoard.winner == true) {
+                this.socket.emit('updateData');
                 var obs = this._http.newGame({
                     length: this.gameBoard.wordToGuess.length,
                     word: this.gameBoard.wordToGuess,
@@ -541,7 +543,7 @@ var HttpService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3N0YXRzL3N0YXRzLmNvbXBvbmVudC5jc3MifQ== */"
+module.exports = ".barChartContainer, .pieChartContainer{\n    display: inline-block;\n    vertical-align: top;\n    width: 40%;\n}\n\n.body{\n    text-align: center;\n}\n\n.slider{\n    width: 50%;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvc3RhdHMvc3RhdHMuY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLHNCQUFzQjtJQUN0QixvQkFBb0I7SUFDcEIsV0FBVztDQUNkOztBQUVEO0lBQ0ksbUJBQW1CO0NBQ3RCOztBQUVEO0lBQ0ksV0FBVztDQUNkIiwiZmlsZSI6InNyYy9hcHAvc3RhdHMvc3RhdHMuY29tcG9uZW50LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5iYXJDaGFydENvbnRhaW5lciwgLnBpZUNoYXJ0Q29udGFpbmVye1xuICAgIGRpc3BsYXk6IGlubGluZS1ibG9jaztcbiAgICB2ZXJ0aWNhbC1hbGlnbjogdG9wO1xuICAgIHdpZHRoOiA0MCU7XG59XG5cbi5ib2R5e1xuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcbn1cblxuLnNsaWRlcntcbiAgICB3aWR0aDogNTAlO1xufSJdfQ== */"
 
 /***/ }),
 
@@ -552,7 +554,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<ng5-slider [(value)]=\"value\" [options]=\"options\"></ng5-slider>"
+module.exports = "<div class = 'body'>\n    \n    <div class = 'barChartContainer'>\n        <p>Game Winning Rates (%) vs Word Length</p>\n        \n    </div>\n    <div class = 'pieChartContainer'>\n        <p>% of Total Games Played of a Given Word Length</p>\n        <p *ngIf = 'allGames'>Number of Games Played: {{allGames.length}}</p>\n        \n    </div>\n</div>"
 
 /***/ }),
 
@@ -570,6 +572,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _http_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../http.service */ "./src/app/http.service.ts");
 /* harmony import */ var d3__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3 */ "./node_modules/d3/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! socket.io-client */ "./node_modules/socket.io-client/lib/index.js");
+/* harmony import */ var socket_io_client__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(socket_io_client__WEBPACK_IMPORTED_MODULE_4__);
+
 
 
 
@@ -578,6 +583,7 @@ var StatsComponent = /** @class */ (function () {
     function StatsComponent(_http) {
         this._http = _http;
         this.wordLengths = [];
+        this.percentages = [];
         this.value = 5;
         this.options = {
             floor: 3,
@@ -585,31 +591,60 @@ var StatsComponent = /** @class */ (function () {
         };
     }
     StatsComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.socket = socket_io_client__WEBPACK_IMPORTED_MODULE_4__();
+        this.socket.on('welcome', function (data) {
+            _this.socket.emit('dataPage');
+        });
+        this.socket.on('hello', function (data) {
+            console.log(data);
+        });
+        this.socket.on('updatedData', function (data) {
+            _this.reset();
+        });
         this.getAllGames();
     };
+    StatsComponent.prototype.reset = function () {
+        var barChart = d3__WEBPACK_IMPORTED_MODULE_3__["select"](".barChartContainer").selectAll("*").remove();
+        var pieChart = d3__WEBPACK_IMPORTED_MODULE_3__["select"](".pieChartContainer").selectAll("*").remove();
+        this.getAllGames();
+    };
+    // userChange(){
+    //   console.log(this.value)
+    // }
     StatsComponent.prototype.getAllGames = function () {
         var _this = this;
         var obs = this._http.allGames();
         obs.subscribe(function (data) {
             _this.allGames = data.rawData;
             _this.completionRates = data.completionRates;
+            _this.lengthsAndPercentages = data.averageLengths;
+            for (var i = 0; i < _this.lengthsAndPercentages.length; i++) {
+                var obj = _this.lengthsAndPercentages[i];
+                _this.percentages.push(obj.percentage);
+            }
             for (var i = 0; i < _this.completionRates.length; i++) {
                 var item = _this.completionRates[i];
                 var length = item.length;
                 _this.wordLengths.push(length);
             }
-            _this.renderSVG();
+            _this.renderBarChart();
+            _this.renderPieChart();
         });
     };
-    StatsComponent.prototype.renderSVG = function () {
-        var animationDuration = 700;
-        var animationDelay = 30;
+    // 888b.    db    888b.    .d88b 8   8    db    888b. 88888 
+    // 8wwwP   dPYb   8  .8    8P    8www8   dPYb   8  .8   8   
+    // 8   b  dPwwYb  8wwK'    8b    8   8  dPwwYb  8wwK'   8   
+    // 888P' dP    Yb 8  Yb    `Y88P 8   8 dP    Yb 8  Yb   8   
+    StatsComponent.prototype.renderBarChart = function () {
         var margin = {
             top: 30,
             right: 30,
             bottom: 40,
             left: 50
         };
+        var animationDuration = 700;
+        var animationDelay = 70;
         var height = 500 - margin.top - margin.bottom;
         var width = 500 - margin.right - margin.left;
         var padding = 5;
@@ -626,8 +661,7 @@ var StatsComponent = /** @class */ (function () {
         var vAxisScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
             .domain([100, 0])
             .range([0, height]);
-        var canvas = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('app-stats').append('svg')
-            .attr('transform', 'translate(40, 40)')
+        var canvas = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('.barChartContainer').append('svg')
             .attr('width', width + margin.right + margin.left)
             .attr('height', height + margin.top + margin.bottom);
         var xLabel = canvas.append('text')
@@ -654,11 +688,9 @@ var StatsComponent = /** @class */ (function () {
             .data(this.completionRates)
             .enter()
             .append('rect')
-            // .attr('height', function(d) { return vScale(d.completionRate) })
             .attr('height', '0')
             .attr('width', function () { return barWidth; })
             .attr('fill', 'green')
-            // .attr('y', function(d) { return height - vScale(d.completionRate) + margin.top })
             .attr('y', height + margin.top)
             .attr('x', function (d, i) { return hScale(i) + padding + margin.left; })
             .on('mouseover', function (d) {
@@ -702,6 +734,71 @@ var StatsComponent = /** @class */ (function () {
         var vGuide = canvas.append('g')
             .call(yAxis)
             .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+    };
+    // 888b. 888 8888    .d88b 8   8    db    888b. 88888 
+    // 8  .8  8  8www    8P    8www8   dPYb   8  .8   8   
+    // 8wwP'  8  8       8b    8   8  dPwwYb  8wwK'   8   
+    // 8     888 8888    `Y88P 8   8 dP    Yb 8  Yb   8   
+    StatsComponent.prototype.renderPieChart = function () {
+        var r = 250;
+        var colorScale = d3__WEBPACK_IMPORTED_MODULE_3__["scaleLinear"]()
+            .domain([d3__WEBPACK_IMPORTED_MODULE_3__["min"](this.percentages), d3__WEBPACK_IMPORTED_MODULE_3__["max"](this.percentages)])
+            .range(['#63ffa4', '#007732']);
+        var height = 500;
+        var width = 500;
+        var canvas = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('.pieChartContainer').append('svg')
+            .attr('width', width)
+            .attr('height', height);
+        var hoverLabel = d3__WEBPACK_IMPORTED_MODULE_3__["select"]('.pieChartContainer').append('div')
+            .style('position', 'absolute')
+            .style('border-radius', '5px')
+            .style('background', 'gray')
+            .style('padding', '10px')
+            .style('border', '1px solid black')
+            .style('opacity', '0');
+        var group = canvas.append('g')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('transform', 'translate(250, 250)');
+        var arc = d3__WEBPACK_IMPORTED_MODULE_3__["arc"]()
+            .innerRadius(r - 100)
+            .outerRadius(r)
+            .cornerRadius(5)
+            .padAngle(0.01);
+        var pie = d3__WEBPACK_IMPORTED_MODULE_3__["pie"]()
+            .value(function (d) {
+            return d.percentage;
+        });
+        var arcs = group.selectAll('.arc')
+            .data(pie(this.lengthsAndPercentages))
+            .enter()
+            .append('g')
+            .attr('class', 'arc');
+        var paths = arcs.append('path')
+            .attr('d', arc)
+            .attr('fill', function (d) { return colorScale(d.data.percentage); })
+            .on('mouseover', function (d) {
+            d3__WEBPACK_IMPORTED_MODULE_3__["selectAll"]('*').interrupt();
+            d3__WEBPACK_IMPORTED_MODULE_3__["select"](this)
+                .transition()
+                .attr('fill', 'lightblue');
+            hoverLabel.transition()
+                .style('opacity', '1');
+            hoverLabel.html("Word length: " + d.data.length + " letters, " + d.data.percentage + "% of all games")
+                .style('left', (d3__WEBPACK_IMPORTED_MODULE_3__["event"].pageX) + 'px')
+                .style('top', (d3__WEBPACK_IMPORTED_MODULE_3__["event"].pageY) + 'px');
+        })
+            .on('mouseleave', function () {
+            d3__WEBPACK_IMPORTED_MODULE_3__["selectAll"]('*').interrupt();
+            d3__WEBPACK_IMPORTED_MODULE_3__["select"](this)
+                .attr('fill', function (d) { return colorScale(d.data.percentage); });
+            hoverLabel.style('opacity', '0');
+        });
+        var text = arcs.append('text')
+            .attr('transform', function (d) { return 'translate(' + arc.centroid(d) + ')'; })
+            .text(function (d) {
+            return d.data.length;
+        });
     };
     StatsComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({

@@ -8,7 +8,8 @@ module.exports = {
             }
             else{
                 let rates = computeCompletionRates(games)
-                res.json({message : "Success!", rawData : games, completionRates : rates})
+                let avgLengths = computeAvgWordLengths(games)
+                res.json({message : "Success!", rawData : games, completionRates : rates, averageLengths : avgLengths})
             }
         })
     },
@@ -27,6 +28,22 @@ module.exports = {
             else {
                 res.json({message : "Success"})
             }
+        })
+    },
+
+    allGamesUpdate : function(){
+        return new Promise(function(resolve, reject){
+            Game.find({}, function(err, games){
+                if (err) {
+                    console.log(err)
+                }
+                else{
+                    let rates = computeCompletionRates(games)
+                    let avgLengths = computeAvgWordLengths(games)
+                    console.log('im here!')
+                    resolve ({message : "Success!", rawData : games, completionRates : rates, averageLengths : avgLengths})
+                }
+            })
         })
     }
 }
@@ -63,7 +80,7 @@ function computeCompletionRates(arr){
 
     //now simply find a percentage completion rate
     for (var i in tallies){
-        rate = tallies[i].completed / tallies[i].total
+        var rate = tallies[i].completed / tallies[i].total
         rate = Math.floor(rate * 100)
         ans.push(
             {length : i, completionRate : rate}
@@ -71,3 +88,32 @@ function computeCompletionRates(arr){
     }
     return ans
 }
+
+function computeAvgWordLengths(arr){
+    var totalGames = arr.length
+
+    var tallies = {}
+
+    for (var i = 0; i < arr.length; i++){
+        var gameObj = arr[i]
+        if (!tallies[gameObj.length]){
+            tallies[gameObj.length] = 1
+        }
+        else {
+            tallies[gameObj.length] ++
+        }
+    }
+
+    var ans = []
+
+    for (var i in tallies){
+        var rate = Math.floor( (tallies[i] / totalGames) * 100 )
+        ans.push( {
+            length : i,
+            percentage : rate
+        })
+    }
+
+    return ans
+}
+
