@@ -1,5 +1,6 @@
 var path = require('path')
 var controller = require('../controllers/games')
+var interpreter = require('../controllers/speechStream')
 
 
 module.exports = function(app){
@@ -13,6 +14,10 @@ module.exports = function(app){
 
     app.post('/newGame', function(req, res){
         controller.newGame(req, res)
+    })
+
+    app.post('/speech', function(req, res){
+        interpreter.openStream(req, res)
     })
     
     app.all('*', function(req, res){

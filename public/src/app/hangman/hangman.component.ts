@@ -25,6 +25,7 @@ export class HangmanComponent implements OnInit {
   newMsg = ''
   conversation = []
   welcomeVisible;
+  speechClicked = false
 
    constructor(private _titleService : Title,
     private _route : ActivatedRoute,
@@ -200,5 +201,16 @@ export class HangmanComponent implements OnInit {
     this.conversation.push({name : this.name, msg : ": " + this.newMsg})
     this.socket.emit('newMsg', {roomID : this.roomID, msg : ": " + this.newMsg, name : this.name})
     this.newMsg = ''
+  }
+
+  activateSpeech(){
+    this.speechClicked = true
+    setTimeout(() => {
+      this.speechClicked = false
+      let obs = this._http.openSpeech()
+      obs.subscribe((data) => {
+        console.log(data)
+      })
+    }, 7000);
   }
 }

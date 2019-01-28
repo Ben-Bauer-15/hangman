@@ -37,7 +37,7 @@ export class StatsComponent implements OnInit {
     })
 
     this.socket.on('updatedData', (data) => {
-      this.reset()
+      // this.reset()
     })
       
       this.getAllGames()

@@ -1,4 +1,5 @@
 <div class = 'title'>Hangman</div>
+<div id = 'speech' (click) = 'activateSpeech()'>Play in Speech Mode</div>
 <div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>
 <div class = 'hangmanContainer'>
   <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>
@@ -36,5 +37,10 @@
 </div>
 
 <button class = 'dataBtn' [routerLink] = "['/data']">Cool Data!</button>
+
+<div *ngIf = 'speechClicked' class = 'speechInfo'>
+  <h3>Now you can tell the program to select letters for you or start a new game!</h3>
+  <h3>For example, say "Letter B" or "New Game"</h3>
+</div>
 
 <app-welcome *ngIf = 'welcomeVisible'></app-welcome>

@@ -15,4 +15,8 @@ export class HttpService {
   newGame(obj){
     return this._http.post('/newGame', obj)
   }
+
+  openSpeech(){
+    return this._http.post('/speech', {message : "Start"})
+  }
 }
