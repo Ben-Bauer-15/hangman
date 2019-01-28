@@ -1,10 +1,11 @@
 function main() {
 
-    const record = require('node-record-lpcm16');
     
-    // Imports the Google Cloud client library
-    const speech = require('@google-cloud/speech');
-    
+    var speech = require('@google-cloud/speech')
+
+    var record = require('node-record-lpcm16')
+
+
     // Creates a client
     const client = new speech.SpeechClient();
 
@@ -56,5 +57,3 @@ function main() {
     console.log('Listening, press Ctrl+C to stop.');
     // record.stop()
 }
-
-main()
