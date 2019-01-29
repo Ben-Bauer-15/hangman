@@ -16,7 +16,8 @@ export class HttpService {
     return this._http.post('/newGame', obj)
   }
 
-  openSpeech(){
-    return this._http.post('/speech', {message : "Start"})
+  writeFile(){
+    console.log('http file')
+    return this._http.post('/writeFile', {message : "Start"})
   }
 }

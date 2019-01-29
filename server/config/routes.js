@@ -16,8 +16,9 @@ module.exports = function(app){
         controller.newGame(req, res)
     })
 
-    app.post('/speech', function(req, res){
-        interpreter.openStream(req, res)
+    app.post('/writeFile', function(req, res){
+        console.log("routes file")
+        interpreter.recordAudio()
     })
     
     app.all('*', function(req, res){
