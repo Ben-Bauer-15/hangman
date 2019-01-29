@@ -201,7 +201,7 @@ module.exports = ".title {\n    text-align: center;\n    font-size: 6em;\n    ma
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'speech' (click) = 'activateSpeech()'>Play in Speech Mode</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>\n</div>\n\n<button class = 'dataBtn' [routerLink] = \"['/data']\">Cool Data!</button>\n\n<div *ngIf = 'speechClicked' class = 'speechInfo'>\n  <h3>Now you can tell the program to select letters for you or start a new game!</h3>\n  <h3>For example, say \"Letter B\" or \"New Game\"</h3>\n</div>\n\n<app-welcome *ngIf = 'welcomeVisible'></app-welcome>"
+module.exports = "<div class = 'title'>Hangman</div>\n<div id = 'speech' (click) = 'activateSpeech()'>Play in Speech Mode</div>\n<div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>\n<div class = 'hangmanContainer'>\n  <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>\n  \n  \n  <div *ngFor = 'let row of gameBoard.alphabetDict'>\n\n    <div \n      *ngFor = 'let dict of row'\n      [ngClass] = \"{'clicked' : dict.clicked}\"\n      (click) = 'selectLetter(dict.letter)' \n      class = 'keyboard' \n      >{{dict.letter}}</div>\n    </div>\n\n  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>\n  \n</div>\n\n<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>\n\n<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>\n  <h3>Share this link with your friends to play together!</h3>\n  <h4>{{linkToShare}}</h4>\n  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>\n</div>\n\n<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>\n<div *ngIf = 'chatsActivated' id = 'activeChats'>\n  <div class = 'newChat'>\n    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>\n    <button (click) = 'sendMsg()'>Send</button>\n  </div>\n  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>\n</div>\n\n<button class = 'dataBtn' [routerLink] = \"['/data']\">Cool Data!</button>\n\n<!-- <div *ngIf = 'speechClicked' class = 'speechInfo'>\n  <h3>Now you can tell the program to select letters for you or start a new game!</h3>\n  <h3>For example, say \"Letter B\" or \"New Game\"</h3>\n</div> -->\n\n<app-welcome *ngIf = 'welcomeVisible'></app-welcome>"
 
 /***/ }),
 
@@ -385,8 +385,17 @@ var HangmanComponent = /** @class */ (function () {
         var _this = this;
         this.speechClicked = true;
         var obs = this._http.writeFile();
-        obs.subscribe(function () {
-            console.log('component file');
+        obs.subscribe(function (data) {
+            console.log(data);
+            if (data.message == "Error") {
+            }
+            else if (data.message == "New") {
+                _this.newGame();
+            }
+            else {
+                var letter = data.message.letter.toUpperCase();
+                _this.selectLetter(letter);
+            }
         });
         setTimeout(function () {
             _this.speechClicked = false;

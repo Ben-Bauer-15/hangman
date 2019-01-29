@@ -18,7 +18,7 @@ module.exports = function(app){
 
     app.post('/writeFile', function(req, res){
         console.log("routes file")
-        interpreter.recordAudio()
+        interpreter.recordAudio(req, res)
     })
     
     app.all('*', function(req, res){

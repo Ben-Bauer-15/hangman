@@ -9,92 +9,53 @@ var fs = require('fs')
 
 
 module.exports = {
-  recordAudio : function(){
-    writeFile()
+  recordAudio : async function(req, res){
+    writeFile(req, res)
   }
 }
 
 
-function writeFile(){
-  console.log('hello world')
+async function writeFile(req, res){
+  var returnToClient;
   var fileID = makeid()
-    var file = fs.createWriteStream('./server/audio/' +fileID + '.wav', { encoding: 'binary' })
+  var filePath = './server/audio/' + fileID + '.wav'
+  var file = fs.createWriteStream('./server/audio/' + fileID + '.wav', { encoding: 'binary' })
       
     record.start({
       sampleRate: 44100,
       verbose: true,
-      silence: '0.5' 
+      silence: '0.3',
     })
+
     .pipe(file)
-    console.log('Listening, press Ctrl+C to stop.');
+    .on('close', async () => {
+      returnToClient = await getGoogleTranscription(filePath)
+        
+      console.log('final return is ', returnToClient)
+      res.json({message : returnToClient})
+      fs.unlink(filePath + '', (err) => {
+        if (err) throw err;
+        console.log(filePath + ' was deleted');
+      });
+      
+    })
+    
+    
+    
 }
 
-// writeFile()
 
 
 
-async function openStream() {
+async function getGoogleTranscription(input) {
+    var output = ''
   
-    // Creates a client
-    // const client = new speech.SpeechClient();
+    const phrases = [
+        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Letter", "Stop", "New Game"
+    ]
 
-    // const sampleRateHertz = '16000'
-    // const encoding = 'LINEAR16'
-    // const languageCode = 'en-US'
-    // const phrases = [
-    //     "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Letter", "Stop", "New Game"
-    // ]
-    
-    // const request = {
-    //   config: {
-    //     encoding: encoding,
-    //     sampleRateHertz: sampleRateHertz,
-    //     languageCode: languageCode,
-    //     phrases : phrases
-    //   },
-    //   interimResults: false, 
-    //   // single_utterance : true
-    // };
-    
-    // // Create a recognize stream
-    // const recognizeStream = client
-    //   .streamingRecognize(request)
-    //   .on('error', console.error)
-    //   .on('data', data =>
-    //     {
-    //     var trans = data.results[0]
-
-    //     //send the received data to be processed
-    //     var response = processSpeech(trans)
-    //     console.log(response)
-    //     // res.json({message : response})
-    //     }
-    //   );
-    
-    // // Start recording and send the microphone input to the Speech API
-    // record
-    //   .start({
-    //     sampleRateHertz: sampleRateHertz,
-    //     threshold: 0,
-    //     verbose: false,
-    //     recordProgram: 'rec', 
-    //     silence: '10.0',
-    //   })
-    //   .on('error', console.error)
-    //   .pipe(recognizeStream);
-    
-    //   console.log('Listening, press Ctrl+C to stop.');
-    
-    
-    
-
-    // Creates a client
     const client = new speech.SpeechClient();
-
-    /**
-     * TODO(developer): Uncomment the following lines before running the sample.
-     */
-    const filename = '../audio/test.wav';
+    const filename = input
     const encoding = 'LINEAR16';
     const sampleRateHertz = 44100;
     const languageCode = 'en-US';
@@ -103,6 +64,7 @@ async function openStream() {
       encoding: encoding,
       sampleRateHertz: sampleRateHertz,
       languageCode: languageCode,
+      phrases : phrases
     };
     const audio = {
       content: fs.readFileSync(filename).toString('base64'),
@@ -113,23 +75,21 @@ async function openStream() {
       audio: audio,
     };
 
-    // Detects speech in the audio file
     const [response] = await client.recognize(request);
-    const transcription = response.results
-      .map(result => result.alternatives[0].transcript)
-      .join('\n');
-    console.log(`Transcription: `, transcription);
-}
     
+    const returnToWrite = processSpeech(response.results[0])
+    return returnToWrite
+}
 
 
 function processSpeech(input){
-  console.log(input)
-    if (input.alternatives[0].confidence < 0.7){
-        
+    console.log(input)
+    var returnToSpeech;
+    if (input == undefined){
+      return "Error"
     }
+
     var command = input.alternatives[0].transcript
-    console.log(command)
 
     if (command[0] == " "){
       command = command.slice(1, command.length)
@@ -138,26 +98,23 @@ function processSpeech(input){
     let tests = {letter : letterMatch.test(command), stop : stopMatch.test(command), new : newMatch.test(command)}
 
     if (tests.stop){
-      record.stop()
-      return "Stop"
+      returnToSpeech = "Stop"
     }
 
     else if (tests.letter){
-      // console.log(command[command.length - 1])
-      return command[command.length - 1]
+      returnToSpeech = {letter : command[command.length - 1]}
     }
     
     else if (tests.new){
-      return "New"
+      returnToSpeech = "New"
     }
 
     else {
-      return "Error"
+      returnToSpeech = "Error"
     }
-}
 
-// writeFile()
-// openStream()
+    return returnToSpeech
+}
 
 
 function makeid() {

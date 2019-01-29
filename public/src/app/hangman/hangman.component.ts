@@ -210,8 +210,21 @@ export class HangmanComponent implements OnInit {
   activateSpeech(){
     this.speechClicked = true
     let obs = this._http.writeFile()
-    obs.subscribe(() => {
-      console.log('component file')
+    obs.subscribe((data : any) => {
+      console.log(data)
+      if (data.message == "Error"){
+        
+      }
+
+      else if (data.message == "New"){
+        this.newGame()
+
+      }
+
+      else {
+        var letter = data.message.letter.toUpperCase()
+        this.selectLetter(letter)
+      }
     })
 
     setTimeout(() => {
