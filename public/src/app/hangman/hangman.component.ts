@@ -5,6 +5,8 @@ import * as io from 'socket.io-client'
 import { ActivatedRoute, Params } from '@angular/router'
 import { AppComponent } from "../app.component";
 import { HttpService } from "../http.service";
+import { Interpreter } from "./interpreter";
+
 
 
  @Component({
@@ -30,7 +32,8 @@ export class HangmanComponent implements OnInit {
    constructor(private _titleService : Title,
     private _route : ActivatedRoute,
     public _component : AppComponent,
-    private _http : HttpService) { 
+    private _http : HttpService,
+    ) { 
     
 
     this.setTitle()
@@ -206,11 +209,8 @@ export class HangmanComponent implements OnInit {
   activateSpeech(){
     this.speechClicked = true
     setTimeout(() => {
+      // this._interpreter.openStream()
       this.speechClicked = false
-      let obs = this._http.openSpeech()
-      obs.subscribe((data) => {
-        console.log(data)
-      })
     }, 7000);
   }
 }

@@ -384,11 +384,8 @@ var HangmanComponent = /** @class */ (function () {
         var _this = this;
         this.speechClicked = true;
         setTimeout(function () {
+            // this._interpreter.openStream()
             _this.speechClicked = false;
-            var obs = _this._http.openSpeech();
-            obs.subscribe(function (data) {
-                console.log(data);
-            });
         }, 7000);
     };
     HangmanComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
