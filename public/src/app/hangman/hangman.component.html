@@ -1,5 +1,4 @@
 <div class = 'title'>Hangman</div>
-<div id = 'speech' (click) = 'activateSpeech()'>Play in Speech Mode</div>
 <div id = 'guesses'>{{gameBoard.guessesRemaining}}</div>
 <div class = 'hangmanContainer'>
   <div class = 'underline' *ngFor = 'let letter of gameBoard.secretWordLetters'>{{letter.placeholder}}</div>
@@ -15,32 +14,27 @@
       >{{dict.letter}}</div>
     </div>
 
-  <button (click) = 'newGame()' id = 'new'>New Puzzle</button>
-  
-</div>
-
-<div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>
-
-<div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>
-  <h3>Share this link with your friends to play together!</h3>
-  <h4>{{linkToShare}}</h4>
-  <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>
-</div>
-
-<div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
-<div *ngIf = 'chatsActivated' id = 'activeChats'>
-  <div class = 'newChat'>
-    <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>
-    <button (click) = 'sendMsg()'>Send</button>
+    <button (click) = 'newGame()' id = 'new'>New Puzzle</button>
+    
   </div>
-  <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>
-</div>
-
-<button class = 'dataBtn' [routerLink] = "['/data']">Cool Data!</button>
-
-<!-- <div *ngIf = 'speechClicked' class = 'speechInfo'>
-  <h3>Now you can tell the program to select letters for you or start a new game!</h3>
-  <h3>For example, say "Letter B" or "New Game"</h3>
-</div> -->
-
+  
+  <div *ngIf = '!clickedOnPlayMulti' (click) = 'displayLinkToShare()' id = 'connect'>Play Multiplayer!</div>
+  
+  <div *ngIf = 'clickedOnPlayMulti' id = 'linkToShare'>
+    <h3>Share this link with your friends to play together!</h3>
+    <h4>{{linkToShare}}</h4>
+    <button id = 'done' (click) = 'hideLinkDiv()'>Done</button>
+  </div>
+  
+  <div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
+  <div *ngIf = 'chatsActivated' id = 'activeChats'>
+    <div class = 'newChat'>
+      <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>
+      <button (click) = 'sendMsg()'>Send</button>
+    </div>
+    <h4 *ngFor = 'let msg of conversation'>{{msg.name}}{{msg.msg}}</h4>
+  </div>
+  
+<button class = 'dataBtn' [routerLink] = "['/data']">Game Statistics</button>
+  
 <app-welcome *ngIf = 'welcomeVisible'></app-welcome>

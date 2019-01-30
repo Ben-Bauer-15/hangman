@@ -5,8 +5,6 @@ import * as io from 'socket.io-client'
 import { ActivatedRoute, Params } from '@angular/router'
 import { AppComponent } from "../app.component";
 import { HttpService } from "../http.service";
-// import { Interpreter } from "./interpreter";
-
 
 
  @Component({
@@ -33,7 +31,6 @@ export class HangmanComponent implements OnInit {
     private _route : ActivatedRoute,
     public _component : AppComponent,
     private _http : HttpService,
-    // private _interpreter : Interpreter
     ) { 
     
 
@@ -56,7 +53,6 @@ export class HangmanComponent implements OnInit {
 
     this._route.params.subscribe((params : Params) => {
       if (params['id']){
-        console.log(params)
         if (params['name']){
           this._component.name = params['name']
           this.name = this._component.name
@@ -86,7 +82,6 @@ export class HangmanComponent implements OnInit {
 
         this.socket.on('currentGameBoard', (data) => {
           this.gameBoard = data.game
-          console.log(data)
           this.conversation = data.messages
         })
 
@@ -102,11 +97,16 @@ export class HangmanComponent implements OnInit {
           this.welcomeVisible = false
         }
 
+        else if (this._component.name){
+          this.name = this._component.name
+          this.welcomeVisible = false
+        }
+
         this.socket = io()
         this.socket.on('welcome', (data) => {
          this.roomID = data.roomID
          this.address = data.address
-         this.linkToShare = "http://" + this.address + ":5000/room/" + this.roomID + "/guest"
+         this.linkToShare = "http://hangman.ben-bauer.net/room/" + this.roomID + "/guest"
          this.socket.emit('firstUser', {roomID : this.roomID})
        })
        this.socket.on('otherUser', (data) => {
@@ -152,7 +152,6 @@ export class HangmanComponent implements OnInit {
           word : this.gameBoard.wordToGuess, 
           completed : false})
         obs.subscribe((data) => {
-          console.log(data)
         })
 
         this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
@@ -169,7 +168,6 @@ export class HangmanComponent implements OnInit {
           word : this.gameBoard.wordToGuess, 
           completed : true})
         obs.subscribe((data) => {
-          console.log(data)
         })
 
         this.socket.emit('clicked', {roomID : this.roomID, game : this.gameBoard})
@@ -205,30 +203,5 @@ export class HangmanComponent implements OnInit {
     this.conversation.push({name : this.name, msg : ": " + this.newMsg})
     this.socket.emit('newMsg', {roomID : this.roomID, msg : ": " + this.newMsg, name : this.name})
     this.newMsg = ''
-  }
-
-  activateSpeech(){
-    this.speechClicked = true
-    let obs = this._http.writeFile()
-    obs.subscribe((data : any) => {
-      console.log(data)
-      if (data.message == "Error"){
-        
-      }
-
-      else if (data.message == "New"){
-        this.newGame()
-
-      }
-
-      else {
-        var letter = data.message.letter.toUpperCase()
-        this.selectLetter(letter)
-      }
-    })
-
-    setTimeout(() => {
-      this.speechClicked = false
-    }, 7000);
   }
 }

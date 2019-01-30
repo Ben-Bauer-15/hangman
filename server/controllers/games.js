@@ -29,22 +29,6 @@ module.exports = {
                 res.json({message : "Success"})
             }
         })
-    },
-
-    allGamesUpdate : function(){
-        return new Promise(function(resolve, reject){
-            Game.find({}, function(err, games){
-                if (err) {
-                    console.log(err)
-                }
-                else{
-                    let rates = computeCompletionRates(games)
-                    let avgLengths = computeAvgWordLengths(games)
-                    console.log('im here!')
-                    resolve ({message : "Success!", rawData : games, completionRates : rates, averageLengths : avgLengths})
-                }
-            })
-        })
     }
 }
 

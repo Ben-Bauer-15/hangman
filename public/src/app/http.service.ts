@@ -16,8 +16,4 @@ export class HttpService {
     return this._http.post('/newGame', obj)
   }
 
-  writeFile(){
-    console.log('http file')
-    return this._http.post('/writeFile', {message : "Start"})
-  }
 }

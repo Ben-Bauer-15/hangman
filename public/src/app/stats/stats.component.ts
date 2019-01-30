@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from "../http.service";
 import * as d3 from "d3";
-import { Options } from 'ng5-slider';
-import * as io from 'socket.io-client'
 
 
 @Component({
@@ -16,30 +14,11 @@ export class StatsComponent implements OnInit {
   wordLengths = []
   lengthsAndPercentages;
   percentages = []
-  value : Number = 5
-  options: Options = {
-    floor: 3,
-    ceil: 10
-  };
-  socket;
 
   constructor(private _http : HttpService) { }
 
   ngOnInit() {
 
-    this.socket = io()
-    this.socket.on('welcome', (data) => {
-        this.socket.emit('dataPage')
-      })
-    
-    this.socket.on('hello', (data) => {
-      console.log(data)
-    })
-
-    this.socket.on('updatedData', (data) => {
-      // this.reset()
-    })
-      
       this.getAllGames()
     }
 
@@ -49,10 +28,6 @@ export class StatsComponent implements OnInit {
       this.getAllGames()
     }
     
-    // userChange(){
-      //   console.log(this.value)
-      // }
-      
       
     getAllGames(){
       let obs = this._http.allGames()

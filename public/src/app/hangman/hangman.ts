@@ -27,7 +27,6 @@ export class Hangman {
                     this.allWords = rawWords.split(' ')
                     var idx = Math.floor(Math.random() * (this.allWords.length - 1))
                     this.gameBoard.wordToGuess = this.allWords[idx]
-                    console.log(this.gameBoard.wordToGuess)
                     this.createAlphabetDict()
                     this.createSecretWordArray()
 

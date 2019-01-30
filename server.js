@@ -14,7 +14,7 @@ app.use(bodyParser({extended : true}))
 app.use(express.static(__dirname + '/public/dist/public'))
 require('./server/config/routes')(app)
 
-const server = app.listen(5000, () => {
+const server = app.listen(5000, IP, () => {
     console.log("Listening on port 5000")
 })
 
