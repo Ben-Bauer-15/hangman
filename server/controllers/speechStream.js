@@ -1,5 +1,6 @@
 const record = require('node-record-lpcm16');
 const speech = require('@google-cloud/speech');
+console.log(speech)
 
 var letterMatch = new RegExp("^letter|Letter$")
 var stopMatch = new RegExp("^Stop|stop$")
@@ -39,13 +40,7 @@ async function writeFile(req, res){
       });
       
     })
-    
-    
-    
 }
-
-
-
 
 async function getGoogleTranscription(input) {
     var output = ''
@@ -54,7 +49,10 @@ async function getGoogleTranscription(input) {
         "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "Letter", "Stop", "New Game"
     ]
 
-    const client = new speech.SpeechClient();
+    const client = new speech.SpeechClient({
+      projectId: 'hangman-1548692935936',
+      keyFilename: '/Users/bbauer/Desktop/hangman/keys/hangman-6a460fc89b8d.1.json'
+    });
     const filename = input
     const encoding = 'LINEAR16';
     const sampleRateHertz = 44100;
@@ -64,7 +62,9 @@ async function getGoogleTranscription(input) {
       encoding: encoding,
       sampleRateHertz: sampleRateHertz,
       languageCode: languageCode,
-      phrases : phrases
+      phrases : phrases,
+      projectID : "hangman-1548692935936",
+      keyFilename : "/Users/bbauer/Desktop/hangman/keys/hangman-6a460fc89b8d.1.json"
     };
     const audio = {
       content: fs.readFileSync(filename).toString('base64'),
