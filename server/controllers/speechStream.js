@@ -20,7 +20,7 @@ async function writeFile(req, res){
   var returnToClient;
   var fileID = makeid()
   var filePath = './server/audio/' + fileID + '.wav'
-  var file = fs.createWriteStream('./server/audio/' + fileID + '.wav', { encoding: 'binary' })
+  var file = fs.createWriteStream('./server/audio/' + fileID + '.wav', { encoding: 'base64' })
       
     record.start({
       sampleRate: 44100,
@@ -59,12 +59,11 @@ async function getGoogleTranscription(input) {
     const languageCode = 'en-US';
 
     const config = {
-      encoding: encoding,
       sampleRateHertz: sampleRateHertz,
       languageCode: languageCode,
-      phrases : phrases,
-      projectID : "hangman-1548692935936",
-      keyFilename : "/Users/bbauer/Desktop/hangman/keys/hangman-6a460fc89b8d.1.json"
+      phrases : phrases
+      // projectID : "hangman-1548692935936",
+      // keyFilename : "/Users/bbauer/Desktop/hangman/keys/hangman-6a460fc89b8d.1.json"
     };
     const audio = {
       content: fs.readFileSync(filename).toString('base64'),
