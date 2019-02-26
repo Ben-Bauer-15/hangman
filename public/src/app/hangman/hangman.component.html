@@ -27,7 +27,8 @@
   </div>
   
   <div (click) = 'displayActiveChats()' id = 'chatRoom' *ngIf = '!chatsActivated'>Group Chat</div>
-  <div *ngIf = 'chatsActivated' id = 'activeChats'>
+  <div *ngIf = 'chatsActivated' id = 'activeChats' #scroll [scrollTop] = "scroll.scrollHeight">
+    <button (click) = 'hideActiveChats()' id = 'closeChat'>Close</button>
     <div class = 'newChat'>
       <input type = 'text' placeholder = 'New Message' name = 'newMsg' [(ngModel)] = 'newMsg'>
       <button (click) = 'sendMsg()'>Send</button>

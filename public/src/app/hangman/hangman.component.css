@@ -18,6 +18,26 @@
     text-align: center;
 }
 
+#closeChat{
+    position: fixed;
+    left: 92%;
+    top: 4%;
+    -webkit-animation: displayClose 0.4s forwards;
+    animation: displayClose 0.4s forwards;
+}
+
+@keyframes displayClose{
+    0%{
+        left: 100%;
+    }
+    90%{
+        left: 89%;
+    }
+    100%{
+        left: 92%;
+    }
+}
+
 #guesses{
     text-align: center;
     font-size: 4em;
@@ -26,7 +46,7 @@
 
 
 
-#new, #done, .newChat button, .dataBtn{
+#new, #done, .newChat button, .dataBtn, #closeChat{
     color: white;
     width: 71%;
     font-style: italic;
@@ -211,7 +231,7 @@
     border-radius: 5px;
 }
 
-.newChat button {
+.newChat button, #closeChat {
     width: 55px;
     font-size: 13px;
 }
